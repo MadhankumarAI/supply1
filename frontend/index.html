@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="AI-Powered Food System Decision Platform — Detect, Predict, and Prevent Supply Chain Disruptions" />
+  <title>FoodChain AI — Smart Supply Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+
+  <style>
+    /* Hide Google Translate banner */
+    .goog-te-banner-frame.skiptranslate {
+      display: none !important;
+    }
+
+    body {
+      top: 0 !important;
+    }
+
+    /* Style the translate dropdown */
+    .goog-te-combo {
+      background-color: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 8px;
+      color: white;
+      padding: 4px 8px;
+      font-size: 12px;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .goog-te-combo option {
+      background-color: #1a1a1a;
+      color: white;
+    }
+
+    /* Hide "Powered by" text */
+    .goog-te-gadget {
+      font-family: inherit !important;
+      font-size: 0 !important;
+    }
+
+    .goog-te-gadget>span {
+      display: none !important;
+    }
+
+    .goog-logo-link {
+      display: none !important;
+    }
+
+    .goog-te-gadget-icon {
+      display: none !important;
+    }
+  </style>
+  <script type="text/javascript">
+    // Global function for script callback, but we init in React component
+    function googleTranslateElementInit() {
+      // Intentionally empty - initialization handled in React component
+    }
+  </script>
+  <script type="text/javascript"
+    src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.jsx"></script>
+</body>
+
+</html>
