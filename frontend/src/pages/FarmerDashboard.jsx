@@ -124,7 +124,10 @@ function LanguageSelector() {
     }, [])
 
     return (
-        <div id="google_translate_element" className="min-w-[100px] bg-white/5 rounded-xl px-2 flex items-center justify-center"></div>
+        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-white/10">
+            <Globe className="w-4 h-4 text-blue-400" />
+            <div id="google_translate_element" className="flex items-center"></div>
+        </div>
     )
 }
 
