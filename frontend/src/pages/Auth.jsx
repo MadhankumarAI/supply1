@@ -158,7 +158,7 @@ const Auth = () => {
             localStorage.setItem('token', res.data.access_token);
             localStorage.setItem('user', JSON.stringify(res.data));
             const role = res.data.role;
-            navigate(role === 'farmer' ? '/farmer' : role === 'mandi_owner' ? '/mandi' : role === 'retailer' ? '/retailer' : '/');
+            navigate(role === 'farmer' ? '/farmer/dashboard' : role === 'mandi_owner' ? '/mandi/dashboard' : role === 'retailer' ? '/retailer/dashboard' : '/');
         } catch (err) {
             setError(err.response?.data?.detail || 'Authentication failed');
         } finally {
