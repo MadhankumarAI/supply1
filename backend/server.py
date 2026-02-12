@@ -1,31 +1,92 @@
+import logging
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI, Depends, HTTPException, status
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 from datetime import timedelta
 from typing import Optional
+from apscheduler.schedulers.background import BackgroundScheduler
+from apscheduler.triggers.cron import CronTrigger
 
 from database import get_db, init_db, engine
-from models import User, Farmer, MandiOwner, Retailer, Base
+from models import User, Farmer, MandiOwner, Retailer, RetailerItem, RetailerMandiOrder, Base
+from retailer.routes import router as retailer_router
 from schemas import UserRegister, UserLogin, Token, UserResponse
 from auth import verify_password, get_password_hash, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
+from farmer.routes import router as farmer_router
+from retailer.agent import run_demand_agent
+from mandi.routes import router as mandi_router
+from mandi.agent import run_mandi_agent
+from farmer.agent import run_farmer_agent
 
-app = FastAPI(title="Supply Chain Management API")
+logger = logging.getLogger("server")
+
+# ── Scheduler ────────────────────────────────────────────────────────────────
+scheduler = BackgroundScheduler()
+
+
+def _scheduled_agent_job():
+    """Wrapper called by APScheduler — runs both agents."""
+    logger.info("⏰ Cron triggered: running demand agent...")
+    try:
+        result = run_demand_agent()
+        logger.info(f"Retailer agent finished: {result[:200]}")
+    except Exception as e:
+        logger.error(f"Retailer agent failed: {e}", exc_info=True)
+
+    logger.info("⏰ Cron triggered: running mandi agent...")
+    try:
+        result = run_mandi_agent()
+        logger.info(f"Mandi agent finished: {result[:200]}")
+    except Exception as e:
+        logger.error(f"Mandi agent failed: {e}", exc_info=True)
+
+    logger.info("⏰ Cron triggered: running farmer agent...")
+    try:
+        result = run_farmer_agent()
+        logger.info(f"Farmer agent finished: {result[:200]}")
+    except Exception as e:
+        logger.error(f"Farmer agent failed: {e}", exc_info=True)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: schedule the agent to run daily at 06:00 UTC
+    scheduler.add_job(
+        _scheduled_agent_job,
+        trigger=CronTrigger(hour=6, minute=0),
+        id="demand_alert_agent",
+        replace_existing=True,
+    )
+    scheduler.start()
+    logger.info("✅ APScheduler started — demand agent runs daily at 06:00 UTC")
+    yield
+    # Shutdown
+    scheduler.shutdown(wait=False)
+    logger.info("🛑 APScheduler shut down")
+
+
+app = FastAPI(title="Supply Chain Management API", lifespan=lifespan)
 
 # CORS middleware
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=True,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Initialize database tables on startup
-@app.on_event("startup")
-def startup_event():
-    print("Creating database tables...")
-    Base.metadata.create_all(bind=engine)
-    print("Database tables created successfully!")
+# # Initialize database tables on startup
+# @app.on_event("startup")
+# def startup_event():
+#     print("Creating database tables...")
+#     Base.metadata.create_all(bind=engine)
+#     print("Database tables created successfully!")
+
+# Include farmer routes
+app.include_router(farmer_router, prefix="/api/farmer")
 
 @app.get("/")
 def read_root():
@@ -62,7 +123,8 @@ def register(user_data: UserRegister, db: Session = Depends(get_db)):
         password_hash=hashed_password,
         role=user_data.role,
         contact=user_data.contact,
-        location=user_data.location
+        latitude=user_data.latitude,
+        longitude=user_data.longitude
     )
     
     db.add(new_user)
@@ -135,10 +197,48 @@ def login(user_credentials: UserLogin, db: Session = Depends(get_db)):
         "user_id": user.id
     }
 
+# Register routes
+app.include_router(retailer_router)
+app.include_router(mandi_router)
+
 @app.get("/api/health")
 def health_check():
     """Health check endpoint"""
     return {"status": "healthy", "service": "Supply Chain API"}
+
+
+@app.post("/api/agent/run", tags=["Agent"])
+def trigger_agent_manually(user_id: Optional[int] = None):
+    """
+    Manually trigger the demand-alert agent (for testing).
+    Optional query param: ?user_id=123 to run for specific retailer.
+    """
+    try:
+        result = run_demand_agent(target_user_id=user_id)
+        return {"status": "success", "result": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Agent error: {str(e)}")
+
+
+@app.post("/api/agent/mandi/run", tags=["Agent"])
+def trigger_mandi_agent_manually():
+    """Manually trigger the mandi supply-chain agent (for testing)."""
+    try:
+        result = run_mandi_agent()
+        return {"status": "success", "result": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Agent error: {str(e)}")
+
+
+@app.post("/api/agent/farmer/run", tags=["Agent"])
+def trigger_farmer_agent_manually():
+    """Manually trigger the farmer advisory agent (for testing)."""
+    try:
+        result = run_farmer_agent()
+        return {"status": "success", "result": result}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Agent error: {str(e)}")
+
 
 if __name__ == "__main__":
     import uvicorn

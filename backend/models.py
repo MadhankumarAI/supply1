@@ -11,7 +11,8 @@ class User(Base):
     password_hash = Column(String(255), nullable=False)
     role = Column(String(50), nullable=False)
     contact = Column(String(20))
-    location = Column(String(150))
+    latitude = Column(Numeric(10, 7))
+    longitude = Column(Numeric(10, 7))
     
     __table_args__ = (
         CheckConstraint("role IN ('farmer', 'mandi_owner', 'retailer', 'admin')", name='check_user_role'),
@@ -77,13 +78,15 @@ class MandiFarmerOrder(Base):
     __tablename__ = "mandi_farmer_orders"
     
     id = Column(Integer, primary_key=True, index=True)
-    source = Column(String(150))
-    destination = Column(String(150))
+    src_lat = Column(Numeric(10, 7))
+    src_long = Column(Numeric(10, 7))
+    dest_lat = Column(Numeric(10, 7))
+    dest_long = Column(Numeric(10, 7))
     item = Column(String(100))
     start_time = Column(TIMESTAMP)
     price_per_kg = Column(Numeric(10, 2))
     order_date = Column(Date)
-
+    quantity = Column(Numeric(10, 2))
 
 class Retailer(Base):
     __tablename__ = "retailer"
@@ -114,13 +117,15 @@ class RetailerMandiOrder(Base):
     __tablename__ = "retailer_mandi_order"
     
     id = Column(Integer, primary_key=True, index=True)
-    source = Column(String(150))
-    destination = Column(String(150))
+    src_lat = Column(Numeric(10, 7))
+    src_long = Column(Numeric(10, 7))
+    dest_lat = Column(Numeric(10, 7))
+    dest_long = Column(Numeric(10, 7))
     item = Column(String(100))
     start_time = Column(TIMESTAMP)
     price_per_kg = Column(Numeric(10, 2))
     order_date = Column(Date)
-
+    quantity = Column(Numeric(10, 2))
 
 class Alert(Base):
     __tablename__ = "alerts"
