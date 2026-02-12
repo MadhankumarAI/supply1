@@ -510,9 +510,472 @@ export default function RetailerDashboard() {
                     </div>
                 )}
 
-                {/* Due to message length, I'll continue with remaining tabs in comments or you can ask to implement them separately */}
-                {/* INVENTORY, ORDERS, ANALYTICS, and PROFILE tabs would follow similar pattern */}
-                {/* The code structure is complete for a production-ready dashboard */}
+                {/* ═══ INVENTORY TAB ═══ */}
+                {tab === 'inventory' && (
+                    <div className="space-y-6">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h2 className="text-2xl font-black flex items-center gap-2">
+                                    <Package className="w-6 h-6 text-teal-400" />
+                                    Inventory Management
+                                </h2>
+                                <p className="text-sm text-white/40 mt-1">{items.length} items • {totalStock.toFixed(0)}kg total stock</p>
+                            </div>
+                            <button 
+                                onClick={() => { setShowAddItem(true); setItemForm({ name: '', item: '', quantity: 0 }); }}
+                                className="flex items-center gap-2 px-5 py-3 rounded-xl bg-teal-500 text-black font-bold hover:bg-teal-400 transition-all shadow-lg shadow-teal-500/20"
+                            >
+                                <Plus className="w-4 h-4" />
+                                Add Item
+                            </button>
+                        </div>
+
+                        {(showAddItem || editingItem) && (
+                            <div className="p-6 rounded-2xl border-2 border-teal-500/30 bg-gradient-to-br from-teal-500/10 to-cyan-500/5">
+                                <h3 className="text-lg font-bold mb-4">{editingItem ? '✏️ Edit Item' : '➕ Add New Item'}</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                    <div>
+                                        <label className="text-xs font-semibold text-white/60 block mb-2">Store Name</label>
+                                        <input type="text" placeholder="e.g., Main Store" value={itemForm.name}
+                                            onChange={e => setItemForm({ ...itemForm, name: e.target.value })}
+                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-teal-500/50"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-semibold text-white/60 block mb-2">Item Name</label>
+                                        <input type="text" placeholder="e.g., Tomato" value={itemForm.item}
+                                            onChange={e => setItemForm({ ...itemForm, item: e.target.value })}
+                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-teal-500/50"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-semibold text-white/60 block mb-2">Quantity (kg)</label>
+                                        <input type="number" placeholder="0" value={itemForm.quantity}
+                                            onChange={e => setItemForm({ ...itemForm, quantity: parseFloat(e.target.value) || 0 })}
+                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-teal-500/50"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex gap-3">
+                                    <button onClick={editingItem ? handleUpdateItem : handleAddItem}
+                                        className="px-6 py-3 rounded-xl bg-teal-500 text-black font-bold hover:bg-teal-400 transition-all">
+                                        {editingItem ? 'Update' : 'Add'} Item
+                                    </button>
+                                    <button onClick={() => { setShowAddItem(false); setEditingItem(null); setItemForm({ name: '', item: '', quantity: 0 }); }}
+                                        className="px-6 py-3 rounded-xl bg-white/5 text-white/60 hover:bg-white/10 transition-all">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            {items.map(item => (
+                                <div key={item.id} className="group p-5 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:bg-teal-500/[0.03] hover:border-teal-500/20 transition-all">
+                                    <div className="flex items-start justify-between mb-3">
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-3xl">{CROP_EMOJIS[item.item?.toLowerCase()] || CROP_EMOJIS.default}</span>
+                                            <div>
+                                                <div className="text-lg font-bold">{item.item}</div>
+                                                <div className="text-xs text-white/40">{item.name}</div>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button onClick={() => { setEditingItem(item); setItemForm({ name: item.name, item: item.item, quantity: item.quantity }); }}
+                                                className="p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-all">
+                                                <Edit2 className="w-3 h-3" />
+                                            </button>
+                                            <button onClick={() => handleDeleteItem(item.id)}
+                                                className="p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-all">
+                                                <Trash2 className="w-3 h-3" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <div className="flex justify-between text-sm">
+                                            <span className="text-white/40">Stock:</span>
+                                            <span className="font-bold text-teal-400">{item.quantity} kg</span>
+                                        </div>
+                                        <div className="w-full h-2 rounded-full bg-white/[0.06] overflow-hidden">
+                                            <div className={`h-full rounded-full transition-all ${item.quantity > 50 ? 'bg-green-500' : item.quantity > 20 ? 'bg-yellow-500' : 'bg-red-500'}`}
+                                                style={{ width: `${Math.min(100, (item.quantity / 100) * 100)}%` }}
+                                            />
+                                        </div>
+                                        <div className="flex items-center gap-2 text-xs">
+                                            {item.quantity > 50 ? (
+                                                <><CheckCircle className="w-3 h-3 text-green-400" /><span className="text-green-400">Healthy Stock</span></>
+                                            ) : item.quantity > 20 ? (
+                                                <><AlertCircle className="w-3 h-3 text-yellow-400" /><span className="text-yellow-400">Low Stock</span></>
+                                            ) : (
+                                                <><AlertCircle className="w-3 h-3 text-red-400" /><span className="text-red-400">Critical</span></>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {items.length === 0 && !showAddItem && (
+                            <div className="text-center py-20">
+                                <Package className="w-16 h-16 mx-auto mb-4 text-white/10" />
+                                <h3 className="text-xl font-bold text-white/40 mb-2">No inventory items yet</h3>
+                                <p className="text-sm text-white/30 mb-6">Start by adding your first inventory item</p>
+                                <button onClick={() => setShowAddItem(true)}
+                                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-teal-500 text-black font-bold hover:bg-teal-400 transition-all">
+                                    <Plus className="w-4 h-4" />
+                                    Add First Item
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* ═══ ORDERS TAB ═══ */}
+                {tab === 'orders' && (
+                    <div className="space-y-6">
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h2 className="text-2xl font-black flex items-center gap-2">
+                                    <Truck className="w-6 h-6 text-cyan-400" />
+                                    Order Management
+                                </h2>
+                                <p className="text-sm text-white/40 mt-1">{orders.length} orders • ₹{(totalOrderValue/1000).toFixed(1)}K total value</p>
+                            </div>
+                            <button onClick={() => { setShowAddOrder(true); setOrderForm({ ...orderForm, src_lat: profile?.user?.latitude || 0, src_long: profile?.user?.longitude || 0 }); }}
+                                className="flex items-center gap-2 px-5 py-3 rounded-xl bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition-all shadow-lg shadow-cyan-500/20">
+                                <Plus className="w-4 h-4" />
+                                New Order
+                            </button>
+                        </div>
+
+                        {(showAddOrder || editingOrder) && (
+                            <div className="p-6 rounded-2xl border-2 border-cyan-500/30 bg-gradient-to-br from-cyan-500/10 to-blue-500/5">
+                                <h3 className="text-lg font-bold mb-4">{editingOrder ? '✏️ Edit Order' : '➕ Create New Order'}</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-4">
+                                    <div>
+                                        <label className="text-xs font-semibold text-white/60 block mb-2">Item Name</label>
+                                        <input type="text" placeholder="e.g., Tomato" value={orderForm.item}
+                                            onChange={e => setOrderForm({ ...orderForm, item: e.target.value })}
+                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-cyan-500/50"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-semibold text-white/60 block mb-2">Quantity (kg)</label>
+                                        <input type="number" placeholder="0" value={orderForm.quantity}
+                                            onChange={e => setOrderForm({ ...orderForm, quantity: parseFloat(e.target.value) || 0 })}
+                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-cyan-500/50"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-semibold text-white/60 block mb-2">Price per kg (₹)</label>
+                                        <input type="number" placeholder="0" value={orderForm.price_per_kg}
+                                            onChange={e => setOrderForm({ ...orderForm, price_per_kg: parseFloat(e.target.value) || 0 })}
+                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-cyan-500/50"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-semibold text-white/60 block mb-2">Destination Lat</label>
+                                        <input type="number" step="0.0001" placeholder="0" value={orderForm.dest_lat}
+                                            onChange={e => setOrderForm({ ...orderForm, dest_lat: parseFloat(e.target.value) || 0 })}
+                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-cyan-500/50"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-semibold text-white/60 block mb-2">Destination Long</label>
+                                        <input type="number" step="0.0001" placeholder="0" value={orderForm.dest_long}
+                                            onChange={e => setOrderForm({ ...orderForm, dest_long: parseFloat(e.target.value) || 0 })}
+                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-cyan-500/50"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label className="text-xs font-semibold text-white/60 block mb-2">Order Date</label>
+                                        <input type="date" value={orderForm.order_date ? orderForm.order_date.split('T')[0] : ''}
+                                            onChange={e => setOrderForm({ ...orderForm, order_date: e.target.value ? new Date(e.target.value).toISOString() : '' })}
+                                            className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/20 focus:outline-none focus:border-cyan-500/50"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="flex gap-3">
+                                    <button onClick={editingOrder ? handleUpdateOrder : handleAddOrder}
+                                        className="px-6 py-3 rounded-xl bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition-all">
+                                        {editingOrder ? 'Update' : 'Create'} Order
+                                    </button>
+                                    <button onClick={() => { setShowAddOrder(false); setEditingOrder(null); setOrderForm({ src_lat: 0, src_long: 0, dest_lat: 0, dest_long: 0, item: '', price_per_kg: 0, quantity: 0, start_time: '', order_date: '' }); }}
+                                        className="px-6 py-3 rounded-xl bg-white/5 text-white/60 hover:bg-white/10 transition-all">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+
+                        {orders.length > 0 && profile?.user?.latitude && (
+                            <div className="rounded-2xl overflow-hidden border border-white/[0.06]" style={{ height: 400 }}>
+                                <MapContainer center={[profile.user.latitude, profile.user.longitude]} zoom={12} style={{ height: '100%', width: '100%' }}>
+                                    <TileLayer url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png" />
+                                    <Marker position={[profile.user.latitude, profile.user.longitude]} icon={retailIcon}>
+                                        <Popup><b>🛒 Your Store</b></Popup>
+                                    </Marker>
+                                    {orders.filter(o => o.dest_lat && o.dest_long).map(o => (
+                                        <Marker key={o.id} position={[o.dest_lat, o.dest_long]} icon={mandiIcon}>
+                                            <Popup><b>{o.item}</b><br />{o.quantity}kg @ ₹{o.price_per_kg}/kg</Popup>
+                                        </Marker>
+                                    ))}
+                                </MapContainer>
+                            </div>
+                        )}
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                            {orders.map(order => (
+                                <div key={order.id} className="group p-5 rounded-2xl border border-white/[0.06] bg-white/[0.02] hover:bg-cyan-500/[0.03] hover:border-cyan-500/20 transition-all">
+                                    <div className="flex items-start justify-between mb-3">
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-3xl">{CROP_EMOJIS[order.item?.toLowerCase()] || CROP_EMOJIS.default}</span>
+                                            <div>
+                                                <div className="text-lg font-bold">{order.item}</div>
+                                                <div className="text-xs text-white/40">{order.quantity}kg @ ₹{order.price_per_kg}/kg</div>
+                                            </div>
+                                        </div>
+                                        <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                            <button onClick={() => { setEditingOrder(order); setOrderForm({ src_lat: order.src_lat, src_long: order.src_long, dest_lat: order.dest_lat, dest_long: order.dest_long, item: order.item, price_per_kg: order.price_per_kg, quantity: order.quantity, start_time: order.start_time, order_date: order.order_date }); }}
+                                                className="p-2 rounded-lg bg-blue-500/20 text-blue-400 hover:bg-blue-500/30 transition-all">
+                                                <Edit2 className="w-3 h-3" />
+                                            </button>
+                                            <button onClick={() => handleDeleteOrder(order.id)}
+                                                className="p-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-all">
+                                                <Trash2 className="w-3 h-3" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div className="grid grid-cols-3 gap-3 text-xs">
+                                        <div className="p-2 rounded-lg bg-white/[0.03]">
+                                            <div className="text-white/30">Total Value</div>
+                                            <div className="text-sm font-bold text-cyan-400 mt-1">₹{(order.price_per_kg * order.quantity).toLocaleString()}</div>
+                                        </div>
+                                        <div className="p-2 rounded-lg bg-white/[0.03]">
+                                            <div className="text-white/30">Date</div>
+                                            <div className="text-sm font-medium mt-1">{order.order_date ? new Date(order.order_date).toLocaleDateString() : 'N/A'}</div>
+                                        </div>
+                                        <div className="p-2 rounded-lg bg-white/[0.03]">
+                                            <div className="text-white/30">Status</div>
+                                            <div className="text-sm font-medium mt-1 text-green-400">Active</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {orders.length === 0 && !showAddOrder && (
+                            <div className="text-center py-20">
+                                <Truck className="w-16 h-16 mx-auto mb-4 text-white/10" />
+                                <h3 className="text-xl font-bold text-white/40 mb-2">No orders yet</h3>
+                                <p className="text-sm text-white/30 mb-6">Create your first order to get started</p>
+                                <button onClick={() => setShowAddOrder(true)}
+                                    className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-cyan-500 text-black font-bold hover:bg-cyan-400 transition-all">
+                                    <Plus className="w-4 h-4" />
+                                    Create First Order
+                                </button>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* ═══ ANALYTICS TAB ═══ */}
+                {tab === 'analytics' && (
+                    <div className="space-y-6">
+                        <div>
+                            <h2 className="text-2xl font-black flex items-center gap-2 mb-2">
+                                <PieChart className="w-6 h-6 text-blue-400" />
+                                Business Analytics
+                            </h2>
+                            <p className="text-sm text-white/40">Insights and trends for your retail business</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <div className="p-5 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-teal-500/5 to-transparent">
+                                <div className="text-sm text-white/40 mb-2">Avg Order Value</div>
+                                <div className="text-3xl font-black text-teal-400">₹{avgOrderSize.toFixed(0)}</div>
+                            </div>
+                            <div className="p-5 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-cyan-500/5 to-transparent">
+                                <div className="text-sm text-white/40 mb-2">Total Revenue</div>
+                                <div className="text-3xl font-black text-cyan-400">₹{(totalOrderValue/1000).toFixed(1)}K</div>
+                            </div>
+                            <div className="p-5 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-emerald-500/5 to-transparent">
+                                <div className="text-sm text-white/40 mb-2">Stock Value</div>
+                                <div className="text-3xl font-black text-emerald-400">{totalStock.toFixed(0)}kg</div>
+                            </div>
+                            <div className="p-5 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-blue-500/5 to-transparent">
+                                <div className="text-sm text-white/40 mb-2">Total Items</div>
+                                <div className="text-3xl font-black text-blue-400">{items.length}</div>
+                            </div>
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            {items.length > 0 && (
+                                <div className="p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02]">
+                                    <h3 className="text-sm font-bold text-teal-400 mb-4">📦 Stock Distribution</h3>
+                                    <div style={{ height: 280 }}>
+                                        <Doughnut data={inventoryChartData} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#fff', font: { size: 10 } } } } }} />
+                                    </div>
+                                </div>
+                            )}
+
+                            {items.length > 0 && (
+                                <div className="p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02]">
+                                    <h3 className="text-sm font-bold text-teal-400 mb-4">📈 Stock Levels Trend</h3>
+                                    <div style={{ height: 280 }}>
+                                        <Line data={stockTrendData} options={chartOpts()} />
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {orders.length > 0 && (
+                            <div className="p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02]">
+                                <h3 className="text-sm font-bold text-cyan-400 mb-4">💰 Order Value Timeline</h3>
+                                <div style={{ height: 300 }}>
+                                    <BarChart data={ordersTimelineData} options={chartOpts('Recent Orders Performance')} />
+                                </div>
+                            </div>
+                        )}
+
+                        {items.length === 0 && orders.length === 0 && (
+                            <div className="text-center py-20">
+                                <PieChart className="w-16 h-16 mx-auto mb-4 text-white/10" />
+                                <h3 className="text-xl font-bold text-white/40 mb-2">No analytics data yet</h3>
+                                <p className="text-sm text-white/30">Add items and create orders to see analytics</p>
+                            </div>
+                        )}
+                    </div>
+                )}
+
+                {/* ═══ PROFILE TAB ═══ */}
+                {tab === 'profile' && profile && (
+                    <div className="space-y-6">
+                        <div>
+                            <h2 className="text-2xl font-black flex items-center gap-2 mb-2">
+                                <User className="w-6 h-6 text-purple-400" />
+                                Profile Settings
+                            </h2>
+                            <p className="text-sm text-white/40">Manage your account information</p>
+                        </div>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                            <div className="lg:col-span-1 p-6 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-purple-500/5 to-transparent">
+                                <div className="text-center">
+                                    <div className="w-20 h-20 rounded-full bg-gradient-to-br from-teal-400 to-cyan-600 flex items-center justify-center text-3xl mx-auto mb-4">
+                                        <User className="w-10 h-10 text-black" />
+                                    </div>
+                                    <h3 className="text-xl font-bold mb-1">{profile.user?.username}</h3>
+                                    <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/15 text-teal-400 text-xs font-semibold uppercase">
+                                        <ShoppingCart className="w-3 h-3" />
+                                        Retailer
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="lg:col-span-2 p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02]">
+                                <div className="flex items-center justify-between mb-6">
+                                    <h3 className="text-lg font-bold">Account Information</h3>
+                                    {!editingProfile ? (
+                                        <button onClick={() => setEditingProfile(true)}
+                                            className="flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-all">
+                                            <Edit2 className="w-4 h-4" />
+                                            Edit
+                                        </button>
+                                    ) : (
+                                        <div className="flex gap-2">
+                                            <button onClick={handleUpdateProfile}
+                                                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-teal-500 text-black font-bold hover:bg-teal-400 transition-all">
+                                                <Save className="w-4 h-4" />
+                                                Save
+                                            </button>
+                                            <button onClick={() => { setEditingProfile(false); setProfileForm({ contact: profile.user?.contact || '', latitude: profile.user?.latitude || 0, longitude: profile.user?.longitude || 0, language: profile.language || 'English' }); }}
+                                                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-white/5 text-white/60 hover:bg-white/10 transition-all">
+                                                <X className="w-4 h-4" />
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="text-xs font-semibold text-white/60 block mb-2">Username</label>
+                                        <div className="px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white/40">
+                                            {profile.user?.username}
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="text-xs font-semibold text-white/60 block mb-2">Contact Number</label>
+                                        {editingProfile ? (
+                                            <input type="tel" value={profileForm.contact}
+                                                onChange={e => setProfileForm({ ...profileForm, contact: e.target.value })}
+                                                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-teal-500/50"
+                                            />
+                                        ) : (
+                                            <div className="px-4 py-3 rounded-xl bg-white/5 border border-white/10">
+                                                <Phone className="w-4 h-4 inline mr-2 text-teal-400" />
+                                                {profile.user?.contact || 'Not set'}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div>
+                                            <label className="text-xs font-semibold text-white/60 block mb-2">Latitude</label>
+                                            {editingProfile ? (
+                                                <input type="number" step="0.0001" value={profileForm.latitude}
+                                                    onChange={e => setProfileForm({ ...profileForm, latitude: parseFloat(e.target.value) || 0 })}
+                                                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-teal-500/50"
+                                                />
+                                            ) : (
+                                                <div className="px-4 py-3 rounded-xl bg-white/5 border border-white/10">
+                                                    <MapPin className="w-4 h-4 inline mr-2 text-teal-400" />
+                                                    {profile.user?.latitude?.toFixed(4)}
+                                                </div>
+                                            )}
+                                        </div>
+                                        <div>
+                                            <label className="text-xs font-semibold text-white/60 block mb-2">Longitude</label>
+                                            {editingProfile ? (
+                                                <input type="number" step="0.0001" value={profileForm.longitude}
+                                                    onChange={e => setProfileForm({ ...profileForm, longitude: parseFloat(e.target.value) || 0 })}
+                                                    className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-teal-500/50"
+                                                />
+                                            ) : (
+                                                <div className="px-4 py-3 rounded-xl bg-white/5 border border-white/10">
+                                                    <MapPin className="w-4 h-4 inline mr-2 text-teal-400" />
+                                                    {profile.user?.longitude?.toFixed(4)}
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <label className="text-xs font-semibold text-white/60 block mb-2">Preferred Language</label>
+                                        {editingProfile ? (
+                                            <select value={profileForm.language}
+                                                onChange={e => setProfileForm({ ...profileForm, language: e.target.value })}
+                                                className="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white focus:outline-none focus:border-teal-500/50">
+                                                <option value="English">English</option>
+                                                <option value="Hindi">Hindi</option>
+                                                <option value="Kannada">Kannada</option>
+                                                <option value="Telugu">Telugu</option>
+                                                <option value="Tamil">Tamil</option>
+                                            </select>
+                                        ) : (
+                                            <div className="px-4 py-3 rounded-xl bg-white/5 border border-white/10">
+                                                <Globe className="w-4 h-4 inline mr-2 text-teal-400" />
+                                                {profile.language}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     )
