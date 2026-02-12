@@ -315,6 +315,79 @@ export default function FarmerDashboard() {
 
             <div className="flex-1 max-w-5xl mx-auto w-full px-4 py-6 space-y-6">
 
+                {/* ═══ WELCOME HERO SECTION ═══ */}
+                {!responseType && !processing && (
+                    <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-green-500/10 via-emerald-500/5 to-blue-500/10 border border-white/10 p-8 mb-6">
+                        {/* Background pattern */}
+                        <div className="absolute inset-0 opacity-5">
+                            <div className="absolute top-0 left-0 w-40 h-40 bg-green-400 rounded-full blur-3xl"></div>
+                            <div className="absolute bottom-0 right-0 w-40 h-40 bg-blue-400 rounded-full blur-3xl"></div>
+                        </div>
+                        
+                        <div className="relative">
+                            <div className="flex items-center justify-between mb-6">
+                                <div>
+                                    <h1 className="text-3xl font-black mb-2">
+                                        Welcome, Farmer! 🌾
+                                    </h1>
+                                    <p className="text-white/60 text-sm">
+                                        Your AI-powered farming assistant • Get best prices • Smart sell timing • Real-time market insights
+                                    </p>
+                                </div>
+                                <div className="text-6xl animate-bounce hidden sm:block">🚜</div>
+                            </div>
+                            
+                            {/* Quick Stats */}
+                            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
+                                <div className="p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                                    <div className="text-2xl mb-2">📍</div>
+                                    <div className="text-xs text-white/40">Your Location</div>
+                                    <div className="text-sm font-bold mt-1">{lat.toFixed(2)}°, {lng.toFixed(2)}°</div>
+                                </div>
+                                <div className="p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                                    <div className="text-2xl mb-2">🏪</div>
+                                    <div className="text-xs text-white/40">Nearby Mandis</div>
+                                    <div className="text-sm font-bold mt-1">5+ Available</div>
+                                </div>
+                                <div className="p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                                    <div className="text-2xl mb-2">💰</div>
+                                    <div className="text-xs text-white/40">Live Prices</div>
+                                    <div className="text-sm font-bold mt-1 text-green-400">Real-time</div>
+                                </div>
+                                <div className="p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
+                                    <div className="text-2xl mb-2">🤖</div>
+                                    <div className="text-xs text-white/40">AI Assistant</div>
+                                    <div className="text-sm font-bold mt-1 text-blue-400">Ready</div>
+                                </div>
+                            </div>
+
+                            {/* Popular Actions */}
+                            <div>
+                                <h3 className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-3">🚀 Popular Actions</h3>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+                                    {[
+                                        { icon: '💰', label: 'Best Selling Price', cmd: 'sell 100kg tomato' },
+                                        { icon: '⏰', label: 'Sell Now or Wait?', cmd: 'sell tomato today or wait?' },
+                                        { icon: '🔮', label: 'Price Prediction', cmd: 'tomato price tomorrow' },
+                                        { icon: '🌱', label: 'Track My Crop', cmd: 'I grow wheat' },
+                                        { icon: '🌦️', label: 'Weather Forecast', cmd: 'check weather' },
+                                        { icon: '💡', label: 'Farming Tips', cmd: 'how to protect from pests' }
+                                    ].map(action => (
+                                        <button
+                                            key={action.cmd}
+                                            onClick={() => processVoice(action.cmd)}
+                                            className="p-4 rounded-xl bg-white/5 border border-white/10 hover:bg-white/10 hover:border-green-500/30 transition-all group text-left"
+                                        >
+                                            <div className="text-2xl mb-2">{action.icon}</div>
+                                            <div className="text-xs font-semibold text-white/80 group-hover:text-white transition-colors">{action.label}</div>
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
                 {/* ═══ MIC BUTTON ═══ */}
                 <div className="flex flex-col items-center pt-2">
                     <div className="relative">
