@@ -7,7 +7,8 @@ import { Line, Bar as BarChart, Doughnut } from 'react-chartjs-2'
 import { 
     Package, ShoppingCart, TrendingUp, TrendingDown, MapPin, Phone, 
     User, Globe, Plus, Edit2, Trash2, Calendar, DollarSign, Truck,
-    AlertCircle, CheckCircle, Clock, RefreshCw, BarChart3, PieChart
+    AlertCircle, CheckCircle, Clock, RefreshCw, BarChart3, PieChart,
+    Save, X
 } from 'lucide-react'
 import api from '../services/api'
 
