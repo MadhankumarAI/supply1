@@ -124,7 +124,7 @@ function LanguageSelector() {
     }, [])
 
     return (
-        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-white/10">
+        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-white/10 hover:border-purple-500/30 transition-all">
             <Globe className="w-4 h-4 text-blue-400" />
             <div id="google_translate_element" className="flex items-center"></div>
         </div>
