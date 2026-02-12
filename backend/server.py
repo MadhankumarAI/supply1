@@ -9,6 +9,7 @@ from models import User, Farmer, MandiOwner, Retailer, RetailerItem, RetailerMan
 from retailer_routes import router as retailer_router
 from schemas import UserRegister, UserLogin, Token, UserResponse
 from auth import verify_password, get_password_hash, create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
+from farmer.routes import router as farmer_router
 
 app = FastAPI(title="Supply Chain Management API")
 
@@ -27,6 +28,9 @@ app.add_middleware(
 #     print("Creating database tables...")
 #     Base.metadata.create_all(bind=engine)
 #     print("Database tables created successfully!")
+
+# Include farmer routes
+app.include_router(farmer_router, prefix="/api/farmer")
 
 @app.get("/")
 def read_root():
