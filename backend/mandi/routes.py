@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
-from typing import List
+from typing import List, Optional
+from pydantic import BaseModel
 
 from database import get_db
 from models import MandiOwner, MandiItem, MandiFarmerOrder, User
@@ -223,3 +224,49 @@ def delete_order(
         raise HTTPException(status_code=404, detail="Order not found")
     db.delete(order)
     db.commit()
+
+
+# ═════════════════════════════════════════════════════════════════════════════
+#  SUPPLY CHAIN INTELLIGENCE
+# ═════════════════════════════════════════════════════════════════════════════
+
+from mandi.supply_chain import (
+    get_supply_overview, detect_stress_signals, forecast_prices,
+    get_truck_fleet, get_interventions, run_scenario,
+)
+
+
+class ScenarioRequest(BaseModel):
+    rain_days: int = 0
+    demand_surge_pct: int = 0
+    transport_delay_pct: int = 0
+
+
+@router.get("/supply-chain/overview")
+def supply_overview():
+    return get_supply_overview()
+
+
+@router.get("/supply-chain/stress")
+def supply_stress():
+    return detect_stress_signals()
+
+
+@router.get("/supply-chain/forecast")
+def supply_forecast(days: int = 7):
+    return forecast_prices(days)
+
+
+@router.get("/supply-chain/trucks")
+def supply_trucks():
+    return get_truck_fleet()
+
+
+@router.get("/supply-chain/interventions")
+def supply_interventions():
+    return get_interventions()
+
+
+@router.post("/supply-chain/scenario")
+def supply_scenario(req: ScenarioRequest):
+    return run_scenario(req.rain_days, req.demand_surge_pct, req.transport_delay_pct)
