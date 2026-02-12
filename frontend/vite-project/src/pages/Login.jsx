@@ -29,14 +29,14 @@ const Login = () => {
             localStorage.setItem('token', response.data.access_token);
             localStorage.setItem('user', JSON.stringify(response.data));
 
-            // Role-based redirection
+            // Role-based redirection to dashboards
             const role = response.data.role;
             if (role === 'farmer') {
-                navigate('/farmer');
+                navigate('/farmer/dashboard');
             } else if (role === 'mandi_owner') {
-                navigate('/mandi');
+                navigate('/mandi/dashboard');
             } else if (role === 'retailer') {
-                navigate('/retailer');
+                navigate('/retailer/dashboard');
             } else {
                 navigate('/'); // Default/Admin
             }
