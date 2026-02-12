@@ -702,15 +702,6 @@ export default function FarmerDashboard() {
                             : <button onClick={() => speak(weather.summary)} className="px-2 py-1.5 rounded-lg bg-blue-500/15 text-blue-400 text-[10px]">🔊</button>}
                     </div>
                 )}
-
-                {/* Empty state */}
-                {!responseType && !processing && (
-                    <div className="text-center pt-6 space-y-2 text-white/15">
-                        <p className="text-sm">👆 Tap the mic and talk to me</p>
-                        <p className="text-xs">"I grow wheat" • "sell 250 tomato" • "should I harvest?" • "check weather"</p>
-                        <button onClick={() => setShowHelp(true)} className="mt-3 px-4 py-2 rounded-full bg-blue-500/10 border border-blue-500/15 text-blue-400 text-xs">❓ See all commands</button>
-                    </div>
-                )}
             </div>
         </div>
     )
