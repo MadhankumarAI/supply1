@@ -11,4 +11,13 @@ export default defineConfig({
     }),
     tailwindcss(), // ✅ move here
   ],
+  server: {
+    host: '0.0.0.0',
+    port: 3000,
+    allowedHosts: [
+      'localhost',
+      '.preview.emergentagent.com',
+      '.emergentagent.com'
+    ]
+  }
 })
