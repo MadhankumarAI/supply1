@@ -14,7 +14,7 @@ import Cookies from 'js-cookie'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler)
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:8001'
+const API = import.meta.env.VITE_API_URL || 'https://supply1-ucx4.vercel.app'
 const COLORS = ['#22c55e', '#f97316', '#3b82f6']
 
 // ─── Map icons ───
