@@ -1,12 +1,14 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { ArrowLeft, Package, TrendingUp, MapPin, Clock, Calendar, ShoppingBag, Map, X } from 'lucide-react'
-import { MapContainer, TileLayer, Marker, Polyline, Popup, Circle } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from 'react-leaflet'
 import { useMandi } from '../context/MandiContext'
 import { formatCurrency, formatDate } from '../utils/mandiUtils'
 import { RETAILER_LOCATION } from '../data/mandiScenarios'
 import L from 'leaflet'
 import 'leaflet/dist/leaflet.css'
+import 'leaflet-routing-machine'
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 
 // Fix leaflet icon issue
 delete L.Icon.Default.prototype._getIconUrl
@@ -15,6 +17,54 @@ L.Icon.Default.mergeOptions({
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 })
+
+// Routing component
+function RoutingMachine({ start, end }) {
+  const map = useMap()
+
+  useEffect(() => {
+    if (!map || !start || !end) return
+
+    const routingControl = L.Routing.control({
+      waypoints: [
+        L.latLng(start[0], start[1]),
+        L.latLng(end[0], end[1])
+      ],
+      routeWhileDragging: false,
+      addWaypoints: false,
+      draggableWaypoints: false,
+      fitSelectedRoutes: true,
+      showAlternatives: false,
+      lineOptions: {
+        styles: [
+          { 
+            color: '#10b981', 
+            opacity: 0.8, 
+            weight: 4 
+          }
+        ],
+        extendToWaypoints: true,
+        missingRouteTolerance: 0
+      },
+      createMarker: function() { return null; }, // Hide default markers
+      show: false, // Hide turn-by-turn instructions panel
+    }).addTo(map)
+
+    // Hide the routing instructions container
+    const container = routingControl.getContainer()
+    if (container) {
+      container.style.display = 'none'
+    }
+
+    return () => {
+      if (map && routingControl) {
+        map.removeControl(routingControl)
+      }
+    }
+  }, [map, start, end])
+
+  return null
+}
 
 export default function MandiHistory() {
   const navigate = useNavigate()
