@@ -202,6 +202,15 @@ export default function MandiHistory() {
                           </div>
                         </div>
                       </td>
+                      <td className="px-6 py-4">
+                        <button
+                          onClick={() => setSelectedOrderForMap(order)}
+                          className="p-2 bg-green-600/20 hover:bg-green-600/30 border border-green-500/30 rounded-lg transition-all group"
+                          title="View map route"
+                        >
+                          <Map className="w-4 h-4 text-green-400 group-hover:scale-110 transition-transform" />
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
