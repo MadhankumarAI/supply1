@@ -28,13 +28,22 @@ export function MandiProvider({ children }) {
   }, [orderHistory]);
 
   const addOrder = (order) => {
+    console.log('🎯 MandiContext.addOrder called with:', order);
+    
     const newOrder = {
       ...order,
       id: Date.now(),
       orderDate: new Date().toISOString(), // Convert to string for localStorage
       status: 'confirmed'
     };
-    setOrderHistory(prev => [newOrder, ...prev]);
+    
+    console.log('📦 New order object:', newOrder);
+    
+    setOrderHistory(prev => {
+      const updated = [newOrder, ...prev];
+      console.log('📚 Updated order history:', updated);
+      return updated;
+    });
     
     // Create notification for the mandi
     const notification = {
@@ -51,7 +60,16 @@ export function MandiProvider({ children }) {
       read: false,
       type: 'new_order'
     };
-    setMandiNotifications(prev => [notification, ...prev]);
+    
+    console.log('🔔 Notification created:', notification);
+    
+    setMandiNotifications(prev => {
+      const updated = [notification, ...prev];
+      console.log('📬 Updated notifications:', updated);
+      return updated;
+    });
+    
+    console.log('✅ addOrder completed');
   };
 
   const markNotificationAsRead = (notificationId) => {
