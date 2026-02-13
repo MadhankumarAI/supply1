@@ -316,19 +316,14 @@ export default function MandiResults() {
                         </Popup>
                       </Marker>
 
-                      {/* Route Line */}
-                      <Polyline
-                        positions={[
-                          [currentSearch.retailerLocation.latitude, currentSearch.retailerLocation.longitude],
-                          [mandi.latitude, mandi.longitude]
-                        ]}
-                        pathOptions={{
-                          color: hoveredMandi === mandi.id ? '#10b981' : '#6b7280',
-                          weight: hoveredMandi === mandi.id ? 3 : 1,
-                          opacity: hoveredMandi === mandi.id ? 0.8 : 0.3,
-                          dashArray: '5, 10'
-                        }}
-                      />
+                      {/* Actual Road Route - Only show for hovered mandi */}
+                      {hoveredMandi === mandi.id && (
+                        <RoutingMachine
+                          start={[currentSearch.retailerLocation.latitude, currentSearch.retailerLocation.longitude]}
+                          end={[mandi.latitude, mandi.longitude]}
+                          isHovered={true}
+                        />
+                      )}
                     </div>
                   ))}
                 </MapContainer>
