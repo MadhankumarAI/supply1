@@ -102,7 +102,7 @@ export default function RetailerDashboard() {
     const [items, setItems] = useState([])
     const [orders, setOrders] = useState([])
     const [lastUpdated, setLastUpdated] = useState(new Date())
-    const [autoRefresh, setAutoRefresh] = useState(true)
+    // Auto-refresh state removed - feature disabled
     const [selectedOrder, setSelectedOrder] = useState(null)
     
     // Modals
