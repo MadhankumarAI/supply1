@@ -30,7 +30,7 @@ export default function MandiResults() {
 
   useEffect(() => {
     if (!currentSearch) {
-      navigate('/mandi/search')
+      navigate('/retailer/search')
       return
     }
 
