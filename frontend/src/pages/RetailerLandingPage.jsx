@@ -214,7 +214,7 @@ export default function RetailerLandingPage() {
             {/* FOOTER */}
             <footer className="relative z-10 border-t border-white/[0.04] py-10">
                 <div className="max-w-7xl mx-auto px-6 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-4">
-                    <div className="flex items-center gap-2 text-sm text-white/30"><div className="w-6 h-6 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-600 flex items-center justify-center text-[10px] font-bold">R</div>FoodChain AI © 2026</div>
+                    <div className="flex items-center gap-2 text-sm text-white/30"><div className="w-6 h-6 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-600 flex items-center justify-center text-[10px] font-bold">R</div>Agrinova © 2026</div>
                     <div className="flex gap-6 text-xs text-white/30"><a href="#" className="hover:text-white/60 transition-colors">Privacy</a><a href="#" className="hover:text-white/60 transition-colors">Terms</a><a href="#" className="hover:text-white/60 transition-colors">Contact</a></div>
                 </div>
             </footer>

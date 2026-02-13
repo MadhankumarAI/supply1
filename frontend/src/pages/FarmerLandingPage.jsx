@@ -252,7 +252,7 @@ export default function FarmerLandingPage() {
                 <div className="max-w-7xl mx-auto px-6 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-4">
                     <div className="flex items-center gap-2 text-sm text-white/30">
                         <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-green-400 to-emerald-600 flex items-center justify-center text-[10px] font-bold">F</div>
-                        FoodChain AI © 2026
+                        Agrinova © 2026
                     </div>
                     <div className="flex gap-6 text-xs text-white/30">
                         <a href="#" className="hover:text-white/60 transition-colors">Privacy</a>
