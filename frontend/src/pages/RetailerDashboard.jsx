@@ -94,6 +94,7 @@ const chartOpts = (title) => ({
 export default function RetailerDashboard() {
     const navigate = useNavigate()
     useGoogleTranslate()
+    useIndustrialTheme()
     
     const [tab, setTab] = useState('overview')
     const [loading, setLoading] = useState(true)
