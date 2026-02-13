@@ -82,6 +82,7 @@ function RiskGauge({ score, level }) {
 
 export default function MandiDashboard() {
     const navigate = useNavigate()
+    const { getUnreadCountForMandi } = useMandi()
     useGoogleTranslate()
     const [tab, setTab] = useState('overview')
     const [loading, setLoading] = useState(true)
