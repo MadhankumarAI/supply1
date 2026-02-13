@@ -239,10 +239,20 @@ export default function RetailerDashboard() {
         navigate('/login')
     }
 
-    // Analytics calculations
+    // Analytics calculations - Enhanced
     const totalStock = items.reduce((sum, i) => sum + parseFloat(i.quantity || 0), 0)
     const totalOrderValue = orders.reduce((sum, o) => sum + (o.price_per_kg * o.quantity), 0)
     const avgOrderSize = orders.length > 0 ? totalOrderValue / orders.length : 0
+    const avgPricePerKg = orders.length > 0 ? orders.reduce((sum, o) => sum + o.price_per_kg, 0) / orders.length : 0
+    
+    // Growth calculations (mock for demo - compare with previous period)
+    const growthRate = 12.5 // Mock growth percentage
+    const topSellingItem = items.length > 0 ? items.reduce((max, item) => item.quantity > max.quantity ? item : max, items[0]) : null
+    
+    // Order status distribution
+    const activeOrders = orders.filter(o => o.quantity > 0).length
+    const completedOrders = Math.floor(orders.length * 0.7) // Mock
+    const pendingOrders = orders.length - completedOrders
     
     // Chart data for inventory distribution
     const inventoryChartData = {
@@ -262,15 +272,71 @@ export default function RetailerDashboard() {
         }]
     }
 
-    // Orders timeline chart
+    // Orders timeline chart - Enhanced with gradient
     const ordersTimelineData = {
-        labels: orders.slice(0, 10).map((o, i) => `Order ${i + 1}`),
+        labels: orders.slice(0, 10).map((o, i) => `#${i + 1}`),
         datasets: [{
             label: 'Order Value (₹)',
             data: orders.slice(0, 10).map(o => o.price_per_kg * o.quantity),
             backgroundColor: 'rgba(20, 184, 166, 0.6)',
             borderColor: '#14b8a6',
             borderWidth: 2,
+            borderRadius: 8,
+        }]
+    }
+
+    // NEW: Stock trend over time (Area chart)
+    const stockTrendData = {
+        labels: items.map(i => i.item),
+        datasets: [{
+            label: 'Stock Level (kg)',
+            data: items.map(i => i.quantity),
+            borderColor: '#14b8a6',
+            backgroundColor: 'rgba(20, 184, 166, 0.2)',
+            fill: true,
+            tension: 0.4,
+            pointRadius: 4,
+            pointHoverRadius: 6,
+        }]
+    }
+
+    // NEW: Price distribution (Polar Area)
+    const priceDistributionData = {
+        labels: orders.slice(0, 6).map(o => o.item),
+        datasets: [{
+            data: orders.slice(0, 6).map(o => o.price_per_kg),
+            backgroundColor: [
+                'rgba(20, 184, 166, 0.7)',
+                'rgba(34, 197, 94, 0.7)',
+                'rgba(59, 130, 246, 0.7)',
+                'rgba(249, 115, 22, 0.7)',
+                'rgba(168, 85, 247, 0.7)',
+                'rgba(236, 72, 153, 0.7)',
+            ],
+            borderWidth: 2,
+            borderColor: '#0a0a0a',
+        }]
+    }
+
+    // NEW: Performance Radar
+    const performanceRadarData = {
+        labels: ['Orders', 'Revenue', 'Stock', 'Avg Price', 'Growth'],
+        datasets: [{
+            label: 'Performance Metrics',
+            data: [
+                Math.min(orders.length / 10, 100),
+                Math.min(totalOrderValue / 10000, 100),
+                Math.min(totalStock / 10, 100),
+                Math.min(avgPricePerKg, 100),
+                Math.min(growthRate * 5, 100)
+            ],
+            backgroundColor: 'rgba(20, 184, 166, 0.2)',
+            borderColor: '#14b8a6',
+            borderWidth: 2,
+            pointBackgroundColor: '#14b8a6',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: '#14b8a6',
         }]
     }
 
