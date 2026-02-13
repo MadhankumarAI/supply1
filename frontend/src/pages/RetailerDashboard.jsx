@@ -1308,6 +1308,7 @@ export default function RetailerDashboard() {
                         </div>
                     </div>
                 )}
+                </div>
             </div>
         </div>
     )
