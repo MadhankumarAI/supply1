@@ -17,7 +17,10 @@ export default defineConfig({
     allowedHosts: [
       'localhost',
       '.preview.emergentagent.com',
-      '.emergentagent.com'
+      '.emergentagent.com',
+      '.preview.emergentcf.cloud',
+      '.emergentcf.cloud',
+      'supplychain-ui.cluster-12.preview.emergentcf.cloud'
     ]
   }
 })
