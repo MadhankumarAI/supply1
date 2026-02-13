@@ -340,18 +340,10 @@ export default function MandiHistory() {
                       </Popup>
                     </Marker>
 
-                    {/* Route Line */}
-                    <Polyline
-                      positions={[
-                        [RETAILER_LOCATION.latitude, RETAILER_LOCATION.longitude],
-                        [selectedOrderForMap.mandi.latitude, selectedOrderForMap.mandi.longitude]
-                      ]}
-                      pathOptions={{
-                        color: '#10b981',
-                        weight: 3,
-                        opacity: 0.8,
-                        dashArray: '10, 10'
-                      }}
+                    {/* Actual Road Route */}
+                    <RoutingMachine
+                      start={[RETAILER_LOCATION.latitude, RETAILER_LOCATION.longitude]}
+                      end={[selectedOrderForMap.mandi.latitude, selectedOrderForMap.mandi.longitude]}
                     />
                   </>
                 )}
