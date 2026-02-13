@@ -202,12 +202,10 @@ export default function FarmerDashboard() {
                 setMandis((data.mandis || []).slice(0, 5)); setActiveMandi(0)
                 fetchPriceHistory(data.crop || 'tomato')
             }
-        } catch {
-            setResponseType('sell_analysis')
-            const dm = demoMandis(); setMandis(dm); setActiveMandi(0); setCropName('tomato'); setQuantity(100)
-            setAnalysis(demoAnalysis(dm))
-            setTimingFactors([{ icon: '☀️', factor: 'Clear weather', impact: 'Good time for transport', suggestion: 'sell' }, { icon: '📈', factor: 'Price trend UP', impact: 'Prices rising this week', suggestion: 'sell now' }])
-            speak('बैकेंड से कनेक्ट नहीं हो पा रहा। डेमो डाटा दिखा रहे हैं।')
+        } catch (error) {
+            console.error('Voice processing failed:', error)
+            setResponseType('error')
+            speak('क्षमा करें, अभी संपर्क नहीं हो पा रहा है। कृपया पुनः प्रयास करें।') // "Sorry, cannot connect right now. Please try again."
         }
         setProcessing(false)
     }
@@ -215,11 +213,7 @@ export default function FarmerDashboard() {
     const fetchPriceHistory = async (crop) => { try { const r = await axios.get(`${API}/api/farmer/price-history`, { params: { crop, days: 30 } }); setPriceHistory(r.data) } catch { } }
 
     // Demo data
-    const demoMandis = () => {
-        const names = ['APMC Yeshwanthpur', 'KR Market', 'Binny Mill APMC', 'Chikkaballapur', 'Kolar Mandi']
-        return names.map((name, i) => ({ id: i + 1, name, lat: lat + (i % 2 ? -0.06 : 0.08) * (i + 1), lng: lng + (i % 2 ? 0.07 : -0.05) * (i + 1), distance_km: Math.round(8 + i * 12), price_per_kg: Math.round(48 - i * 4), transport_cost: Math.round(300 + i * 250), travel_time_min: Math.round(20 + i * 15) }))
-    }
-    const demoAnalysis = m => ({ ai_recommendation: { recommendation: 'SELL_NOW', best_mandi: { name: m[0].name, price_per_kg: m[0].price_per_kg, distance_km: m[0].distance_km }, spoken_summary: 'अभी बेचना अच्छा रहेगा।', price_trend: 'Prices trending UP' }, mandis: m, request: { crop: 'tomato', quantity: 100 } })
+
 
     // Chart
     const chartData = () => {
@@ -314,7 +308,7 @@ export default function FarmerDashboard() {
                             <div className="absolute top-0 left-0 w-40 h-40 bg-green-400 rounded-full blur-3xl"></div>
                             <div className="absolute bottom-0 right-0 w-40 h-40 bg-blue-400 rounded-full blur-3xl"></div>
                         </div>
-                        
+
                         <div className="relative">
                             <div className="flex items-center justify-between mb-6">
                                 <div>
@@ -327,7 +321,7 @@ export default function FarmerDashboard() {
                                 </div>
                                 <div className="text-6xl animate-bounce hidden sm:block">🚜</div>
                             </div>
-                            
+
                             {/* Quick Stats */}
                             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-6">
                                 <div className="p-4 rounded-xl bg-white/5 border border-white/10 backdrop-blur-sm">
