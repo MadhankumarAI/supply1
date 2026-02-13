@@ -1,18 +1,18 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { MapContainer, TileLayer, Marker, Popup, Circle, useMap, Polyline } from 'react-leaflet'
 import L from 'leaflet'
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend, Filler } from 'chart.js'
-import { Line, Bar as BarChart, Doughnut } from 'react-chartjs-2'
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, RadialLinearScale, Title, Tooltip, Legend, Filler } from 'chart.js'
+import { Line, Bar as BarChart, Doughnut, Radar, PolarArea } from 'react-chartjs-2'
 import { 
     Package, ShoppingCart, TrendingUp, TrendingDown, MapPin, Phone, 
     User, Globe, Plus, Edit2, Trash2, Calendar, DollarSign, Truck,
     AlertCircle, CheckCircle, Clock, RefreshCw, BarChart3, PieChart,
-    Save, X
+    Save, X, Zap, Activity, Navigation, Radio
 } from 'lucide-react'
 import api from '../services/api'
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, Title, Tooltip, Legend, Filler)
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, ArcElement, RadialLinearScale, Title, Tooltip, Legend, Filler)
 
 const TABS = [
     { id: 'overview', label: '📊 Overview', icon: BarChart3 },
