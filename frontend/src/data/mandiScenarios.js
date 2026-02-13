@@ -290,6 +290,21 @@ export const SCENARIOS = {
           { product_name: "Onions", available_quantity: 820, price_per_kg: 24, shelf_life_days: 11, last_updated: "1 hour ago" },
           { product_name: "Potatoes", available_quantity: 950, price_per_kg: 20, shelf_life_days: 14, last_updated: "2 hours ago" }
         ]
+      },
+      {
+        id: "test1",
+        name: "Test1 Mandi",
+        location: "Bangalore Central",
+        latitude: 12.9716,
+        longitude: 77.5946,
+        products: [
+          { product_name: "Tomatoes", available_quantity: 700, price_per_kg: 26, shelf_life_days: 5, last_updated: "1 hour ago" },
+          { product_name: "Onions", available_quantity: 850, price_per_kg: 23, shelf_life_days: 11, last_updated: "2 hours ago" },
+          { product_name: "Carrots", available_quantity: 450, price_per_kg: 31, shelf_life_days: 7, last_updated: "1 hour ago" },
+          { product_name: "Potatoes", available_quantity: 880, price_per_kg: 19, shelf_life_days: 14, last_updated: "3 hours ago" },
+          { product_name: "Cabbage", available_quantity: 370, price_per_kg: 17, shelf_life_days: 6, last_updated: "2 hours ago" },
+          { product_name: "Cauliflower", available_quantity: 400, price_per_kg: 26, shelf_life_days: 7, last_updated: "1 hour ago" }
+        ]
       }
     ]
   }
