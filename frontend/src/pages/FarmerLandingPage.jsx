@@ -16,20 +16,8 @@ function useScrollAnimation() {
 }
 
 function AnimatedCounter({ end, suffix = '', duration = 2000 }) {
-    const [count, setCount] = useState(0)
     const [ref, visible] = useScrollAnimation()
-    useEffect(() => {
-        if (!visible) return
-        let start = 0
-        const step = end / (duration / 16)
-        const timer = setInterval(() => {
-            start += step
-            if (start >= end) { setCount(end); clearInterval(timer) }
-            else setCount(Math.floor(start))
-        }, 16)
-        return () => clearInterval(timer)
-    }, [visible, end, duration])
-    return <span ref={ref}>{count.toLocaleString()}{suffix}</span>
+    return <span ref={ref}>{end.toLocaleString()}{suffix}</span>
 }
 
 const features = [
@@ -62,8 +50,7 @@ const steps = [
 ]
 
 export default function FarmerLandingPage() {
-    const [loaded, setLoaded] = useState(false)
-    useEffect(() => { setTimeout(() => setLoaded(true), 100) }, [])
+    const loaded = true
 
     return (
         <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
