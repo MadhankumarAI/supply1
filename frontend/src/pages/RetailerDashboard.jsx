@@ -99,6 +99,15 @@ export default function RetailerDashboard() {
         loadAll()
     }, [])
 
+    // Real-time auto-refresh every 30 seconds
+    useEffect(() => {
+        if (!autoRefresh) return
+        const interval = setInterval(() => {
+            loadAll()
+        }, 30000) // 30 seconds
+        return () => clearInterval(interval)
+    }, [autoRefresh])
+
     const loadAll = async () => {
         setLoading(true)
         try {
@@ -116,8 +125,9 @@ export default function RetailerDashboard() {
                     language: profileRes.value.data.language || 'English'
                 })
             }
-            if (itemsRes.status === 'fulfilled') setItems(itemsRes.value.data)
-            if (ordersRes.status === 'fulfilled') setOrders(ordersRes.value.data)
+            if (itemsRes.status === 'fulfilled') setItems(itemsRes.value.data || [])
+            if (ordersRes.status === 'fulfilled') setOrders(ordersRes.value.data || [])
+            setLastUpdated(new Date())
         } catch (err) {
             console.error('Failed to load:', err)
         }
