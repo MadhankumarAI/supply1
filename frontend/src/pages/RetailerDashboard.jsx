@@ -464,7 +464,7 @@ export default function RetailerDashboard() {
                 </div>
 
                 {/* CONTENT AREA */}
-                <div className="p-0">
+                <div className="p-6">
 
                 {/* ═══ OVERVIEW TAB ═══ */}
                 {tab === 'overview' && (
