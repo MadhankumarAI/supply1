@@ -29,7 +29,7 @@ export default function MandiSearch() {
     }
     
     setCurrentSearch(searchData)
-    navigate('/mandi/results')
+    navigate('/retailer/results')
   }
 
   return (
@@ -47,7 +47,7 @@ export default function MandiSearch() {
             </div>
           </div>
           <button
-            onClick={() => navigate('/mandi/history')}
+            onClick={() => navigate('/retailer/history')}
             className="px-4 py-2 bg-green-600/20 hover:bg-green-600/30 text-green-400 rounded-lg transition-all border border-green-500/30 text-sm font-medium"
           >
             Order History
