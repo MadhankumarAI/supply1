@@ -130,14 +130,14 @@ export default function RetailerDashboard() {
         loadAll()
     }, [])
 
-    // Real-time auto-refresh every 30 seconds
-    useEffect(() => {
-        if (!autoRefresh) return
-        const interval = setInterval(() => {
-            loadAll()
-        }, 30000) // 30 seconds
-        return () => clearInterval(interval)
-    }, [autoRefresh])
+    // Auto-refresh disabled as per user request
+    // useEffect(() => {
+    //     if (!autoRefresh) return
+    //     const interval = setInterval(() => {
+    //         loadAll()
+    //     }, 30000) // 30 seconds
+    //     return () => clearInterval(interval)
+    // }, [autoRefresh])
 
     const loadAll = async () => {
         setLoading(true)
