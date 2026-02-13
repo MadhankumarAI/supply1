@@ -381,83 +381,90 @@ export default function RetailerDashboard() {
     }
 
     return (
-        <div className="min-h-screen bg-[#0a0a0a] text-white" style={{ fontFamily: "'Inter','Segoe UI',sans-serif" }}>
-            {/* NAV */}
-            <nav className="sticky top-0 z-50 bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-white/[0.06]">
-                <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                        <Link to="/retailer" className="flex items-center gap-2">
-                            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-teal-400 to-cyan-600 flex items-center justify-center shadow-lg shadow-teal-500/20">
-                                <ShoppingCart className="w-5 h-5 text-black" />
-                            </div>
-                            <span className="text-sm font-bold">FoodChain <span className="text-teal-400">Retail</span></span>
-                        </Link>
-                        <span className="px-2.5 py-1 rounded-full bg-teal-500/15 text-teal-400 text-[9px] font-bold uppercase tracking-widest">Smart Inventory</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                        {/* Real-time Status Indicator */}
-                        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-white/5 border border-white/10">
-                            <div className="relative flex items-center gap-2">
-                                <div className={`w-2 h-2 rounded-full ${autoRefresh ? 'bg-green-400 animate-pulse' : 'bg-gray-400'}`}></div>
-                                <span className="text-[10px] text-white/40">
-                                    {autoRefresh ? 'LIVE' : 'PAUSED'}
-                                </span>
-                            </div>
-                            <button 
-                                onClick={() => setAutoRefresh(!autoRefresh)}
-                                className="text-white/40 hover:text-teal-400 transition-colors"
-                                title={autoRefresh ? 'Pause auto-refresh' : 'Enable auto-refresh'}
-                            >
-                                {autoRefresh ? <Radio className="w-3 h-3" /> : <Activity className="w-3 h-3" />}
-                            </button>
-                        </div>
-
-                        {/* Manual Refresh Button */}
-                        <button 
-                            onClick={() => loadAll()}
-                            className="p-2 rounded-lg bg-white/5 hover:bg-teal-500/20 border border-white/10 hover:border-teal-500/30 transition-all group"
-                            title="Refresh data"
-                        >
-                            <RefreshCw className="w-4 h-4 text-white/40 group-hover:text-teal-400 group-hover:rotate-180 transition-all duration-500" />
-                        </button>
-
-                        {/* Last Updated */}
-                        <div className="text-[10px] text-white/30 hidden md:block">
-                            Updated: {lastUpdated.toLocaleTimeString()}
-                        </div>
-
-                        <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-gradient-to-r from-teal-500/10 to-cyan-500/10 border border-teal-500/20 hover:border-teal-500/40 transition-all">
-                            <Globe className="w-4 h-4 text-teal-400" />
-                            <div id="google_translate_element" className="flex items-center"></div>
-                        </div>
-                        <button onClick={handleLogout} className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-white/50 hover:text-white transition-all">
-                            Logout
-                        </button>
-                    </div>
+        <div className="min-h-screen bg-[#0a0a0a] text-white industrial-grid" style={{ fontFamily: "'Azeret Mono', monospace" }}>
+            {/* INDUSTRIAL SIDEBAR NAV */}
+            <div className="fixed left-0 top-0 h-full w-[60px] bg-[#1a1a1a] border-r border-white/[0.08] z-50 flex flex-col">
+                {/* Logo */}
+                <div className="h-[60px] flex items-center justify-center border-b border-white/[0.08]">
+                    <ShoppingCart className="w-6 h-6 text-[#14b8a6]" />
                 </div>
-            </nav>
-
-            {/* TABS */}
-            <div className="sticky top-[57px] z-40 bg-[#0a0a0a]/95 backdrop-blur-xl border-b border-white/[0.04]">
-                <div className="max-w-7xl mx-auto px-4 flex gap-1 overflow-x-auto py-2">
+                
+                {/* Nav Icons */}
+                <div className="flex-1 py-4">
                     {TABS.map(t => (
-                        <button 
-                            key={t.id} 
-                            onClick={() => setTab(t.id)} 
-                            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-semibold whitespace-nowrap transition-all ${
-                                tab === t.id 
-                                    ? 'bg-teal-500/20 text-teal-400 shadow-lg shadow-teal-500/10' 
-                                    : 'text-white/35 hover:text-white/60 hover:bg-white/[0.04]'
+                        <button
+                            key={t.id}
+                            onClick={() => setTab(t.id)}
+                            className={`w-full h-[60px] flex items-center justify-center relative group transition-colors ${
+                                tab === t.id ? 'text-[#14b8a6]' : 'text-white/30 hover:text-white/60'
                             }`}
+                            title={t.label}
                         >
-                            <t.icon className="w-4 h-4" />
-                            {t.label}
+                            {tab === t.id && (
+                                <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[3px] h-[40px] bg-[#14b8a6]"></div>
+                            )}
+                            <t.icon className="w-5 h-5" />
                         </button>
                     ))}
                 </div>
+                
+                {/* Bottom Actions */}
+                <div className="border-t border-white/[0.08]">
+                    <button
+                        onClick={() => setAutoRefresh(!autoRefresh)}
+                        className="w-full h-[60px] flex items-center justify-center text-white/30 hover:text-[#14b8a6] transition-colors"
+                        title={autoRefresh ? 'Disable auto-refresh' : 'Enable auto-refresh'}
+                    >
+                        {autoRefresh ? <Radio className="w-5 h-5" /> : <Activity className="w-5 h-5" />}
+                    </button>
+                    <button
+                        onClick={handleLogout}
+                        className="w-full h-[60px] flex items-center justify-center text-white/30 hover:text-red-400 transition-colors border-t border-white/[0.08]"
+                        title="Logout"
+                    >
+                        <X className="w-5 h-5" />
+                    </button>
+                </div>
             </div>
 
-            <div className="max-w-7xl mx-auto p-4 md:p-6">
+            {/* MAIN OPERATIONS AREA */}
+            <div className="ml-[60px] min-h-screen">
+                {/* INDUSTRIAL HEADER */}
+                <div className="h-[60px] bg-[#1a1a1a] border-b border-white/[0.08] flex items-center justify-between px-6">
+                    <div className="flex items-center gap-4">
+                        <div style={{ fontFamily: "'JetBrains Mono', monospace" }} className="text-xs font-bold tracking-[0.15em] text-[#14b8a6]">
+                            RETAIL OPERATIONS
+                        </div>
+                        {autoRefresh && (
+                            <div className="flex items-center gap-2 px-2 py-1 bg-white/[0.05] border border-white/[0.08]">
+                                <div className="w-2 h-2 rounded-full bg-[#00ff88] animate-pulse"></div>
+                                <span className="text-[10px] font-mono text-white/40 tracking-wider">LIVE</span>
+                            </div>
+                        )}
+                    </div>
+                    
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={() => loadAll()}
+                            className="p-2 border border-white/[0.08] hover:border-[#14b8a6]/30 hover:bg-white/[0.02] transition-colors"
+                            title="Refresh data"
+                        >
+                            <RefreshCw className="w-4 h-4 text-white/40 hover:text-[#14b8a6]" />
+                        </button>
+                        
+                        <div style={{ fontFamily: "'JetBrains Mono', monospace" }} className="text-[10px] text-white/30 tracking-wider">
+                            SYNC: {lastUpdated.toLocaleTimeString('en-US', { hour12: false })}
+                        </div>
+                        
+                        <div className="px-2 py-1 border border-white/[0.08]">
+                            <Globe className="w-4 h-4 text-[#14b8a6] inline mr-2" />
+                            <div id="google_translate_element" className="inline-block"></div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* CONTENT AREA */}
+                <div className="p-0">
 
                 {/* ═══ OVERVIEW TAB ═══ */}
                 {tab === 'overview' && (
