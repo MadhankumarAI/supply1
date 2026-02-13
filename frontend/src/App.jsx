@@ -5,6 +5,7 @@ import FarmerLandingPage from './pages/FarmerLandingPage.jsx'
 import FarmerDashboard from './pages/FarmerDashboard.jsx'
 import MandiLandingPage from './pages/MandiLandingPage.jsx'
 import MandiDashboard from './pages/MandiDashboard.jsx'
+import MandiNotifications from './pages/MandiNotifications.jsx'
 import RetailerLandingPage from './pages/RetailerLandingPage.jsx'
 import RetailerDashboard from './pages/RetailerDashboard.jsx'
 import RetailerOrders from './pages/RetailerOrders.jsx'
@@ -26,6 +27,7 @@ function App() {
         <Route path="/farmer/dashboard" element={<FarmerDashboard />} />
         <Route path="/mandi" element={<MandiLandingPage />} />
         <Route path="/mandi/dashboard" element={<MandiDashboard />} />
+        <Route path="/mandi/notifications" element={<MandiNotifications />} />
         <Route path="/retailer" element={<RetailerLandingPage />} />
         <Route path="/retailer/dashboard" element={<RetailerDashboard />} />
         <Route path="/retailer/orders" element={<RetailerOrders />} />
