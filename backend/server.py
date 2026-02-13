@@ -206,6 +206,17 @@ def health_check():
     """Health check endpoint"""
     return {"status": "healthy", "service": "Supply Chain API"}
 
+@app.get("/healthz")
+def healthz():
+    """Kubernetes-style health check endpoint"""
+    return {"status": "ok"}
+
+@app.get("/ready")
+def readiness():
+    """Kubernetes-style readiness check endpoint"""
+    return {"status": "ready"}
+
+
 
 @app.post("/api/agent/run", tags=["Agent"])
 def trigger_agent_manually(user_id: Optional[int] = None):
