@@ -1,10 +1,12 @@
 import { useState, useEffect, useCallback } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { MapContainer, TileLayer, Marker, Popup, Polyline, useMap } from 'react-leaflet'
+import { Bell } from 'lucide-react'
 import L from 'leaflet'
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler } from 'chart.js'
 import { Line, Bar as BarChart } from 'react-chartjs-2'
 import api from '../services/api'
+import { useMandi } from '../context/MandiContext'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, BarElement, Title, Tooltip, Legend, Filler)
 
@@ -162,6 +164,19 @@ export default function MandiDashboard() {
                         <span className="px-2.5 py-1 rounded-full bg-orange-500/15 text-orange-400 text-[9px] font-bold uppercase tracking-widest">Supply Chain AI</span>
                     </div>
                     <div className="flex items-center gap-3">
+                        {/* Notification Bell */}
+                        <button
+                            onClick={() => navigate('/mandi/notifications?mandiId=m1')}
+                            className="relative p-2 rounded-xl bg-white/5 hover:bg-white/10 transition-all"
+                            title="View notifications"
+                        >
+                            <Bell className="w-5 h-5 text-orange-400" />
+                            {getUnreadCountForMandi('m1') > 0 && (
+                                <span className="absolute -top-1 -right-1 w-5 h-5 bg-orange-600 text-white text-xs font-bold rounded-full flex items-center justify-center">
+                                    {getUnreadCountForMandi('m1')}
+                                </span>
+                            )}
+                        </button>
                         <div id="google_translate_element" className="scale-75 origin-right" />
                         <button onClick={handleLogout} className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 text-xs text-white/50 hover:text-white transition-all">Logout</button>
                     </div>
