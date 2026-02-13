@@ -19,7 +19,9 @@ export default function MandiConfirmation() {
       mandi: {
         id: selectedMandi.id,
         name: selectedMandi.name,
-        location: selectedMandi.location
+        location: selectedMandi.location,
+        latitude: selectedMandi.latitude,
+        longitude: selectedMandi.longitude
       },
       pricePerKg: selectedMandi.pricePerKg,
       totalCost: selectedMandi.totalCost,
