@@ -63,7 +63,7 @@ export default function MandiResults() {
 
   const handleSelectMandi = (mandi) => {
     setSelectedMandi(mandi)
-    navigate('/mandi/confirm')
+    navigate('/retailer/confirm')
   }
 
   // Create custom icons
@@ -87,7 +87,7 @@ export default function MandiResults() {
       <div className="bg-black/40 backdrop-blur-sm border-b border-green-500/20">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <button
-            onClick={() => navigate('/mandi/search')}
+            onClick={() => navigate('/retailer/search')}
             className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-3"
           >
             <ArrowLeft className="w-4 h-4" />
