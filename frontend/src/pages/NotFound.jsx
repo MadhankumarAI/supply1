@@ -1,142 +1,216 @@
 import { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import { Home, RefreshCw, ArrowLeft, AlertTriangle } from 'lucide-react'
+import { Link } from 'react-router-dom'
 
 export default function NotFound() {
-    const navigate = useNavigate()
     const [loaded, setLoaded] = useState(false)
 
     useEffect(() => {
         setTimeout(() => setLoaded(true), 100)
         
-        // Add floating animation
+        // Add animations
         const style = document.createElement('style')
         style.textContent = `
-            @keyframes float {
-                0%, 100% { transform: translateY(0px); }
-                50% { transform: translateY(-20px); }
-            }
-            @keyframes rotate {
+            @keyframes spiral {
                 from { transform: rotate(0deg); }
                 to { transform: rotate(360deg); }
+            }
+            @keyframes pulse-ring {
+                0%, 100% { transform: scale(1); opacity: 0.4; }
+                50% { transform: scale(1.05); opacity: 0.6; }
+            }
+            @keyframes float-particle {
+                0%, 100% { transform: translate(0, 0); }
+                25% { transform: translate(10px, -10px); }
+                50% { transform: translate(-5px, -20px); }
+                75% { transform: translate(-10px, -10px); }
+            }
+            @keyframes fade-in-up {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            @keyframes glow {
+                0%, 100% { filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.4)); }
+                50% { filter: drop-shadow(0 0 30px rgba(16, 185, 129, 0.6)); }
             }
         `
         document.head.appendChild(style)
         return () => document.head.removeChild(style)
     }, [])
 
+    // Generate particles
+    const particles = Array.from({ length: 50 }, (_, i) => ({
+        id: i,
+        x: Math.random() * 100,
+        y: Math.random() * 100,
+        delay: Math.random() * 5,
+        duration: 3 + Math.random() * 2
+    }))
+
     return (
-        <div className="min-h-screen bg-[#0a0a0a] text-white flex flex-col">
-            {/* Animated background - Multi-color gradients like homepage */}
-            <div className="fixed inset-0 overflow-hidden pointer-events-none">
-                <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-green-500/5 rounded-full blur-3xl" style={{ animation: 'float 8s ease-in-out infinite' }} />
-                <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-orange-500/5 rounded-full blur-3xl" style={{ animation: 'float 10s ease-in-out infinite 2s' }} />
-                <div className="absolute top-1/2 left-1/2 w-96 h-96 bg-teal-500/5 rounded-full blur-3xl" style={{ animation: 'float 12s ease-in-out infinite 4s' }} />
+        <div className="min-h-screen bg-black text-white overflow-hidden relative">
+            {/* Floating particles */}
+            <div className="fixed inset-0 pointer-events-none">
+                {particles.map(p => (
+                    <div
+                        key={p.id}
+                        className="absolute w-1 h-1 bg-green-500/30 rounded-full"
+                        style={{
+                            left: `${p.x}%`,
+                            top: `${p.y}%`,
+                            animation: `float-particle ${p.duration}s ease-in-out infinite ${p.delay}s`
+                        }}
+                    />
+                ))}
             </div>
 
-            {/* Nav - Same as homepage */}
-            <nav className="relative z-10 flex items-center justify-between px-8 py-6 max-w-7xl mx-auto w-full">
-                <Link to="/" className="flex items-center gap-2">
-                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-400 to-emerald-500 flex items-center justify-center text-sm font-bold">F</div>
-                    <span className="text-lg font-semibold tracking-tight">FoodChain AI</span>
-                </Link>
-                <div className="flex items-center gap-6 text-sm text-white/60">
-                    <Link to="/login" className="hover:text-white transition-colors">Login</Link>
-                    <Link to="/register" className="px-4 py-2 rounded-full bg-white/10 text-white text-sm font-medium hover:bg-white/20 transition-all border border-white/10">
-                        Register
-                    </Link>
-                </div>
-            </nav>
-
-            {/* Main 404 Content */}
-            <main className="relative z-10 flex-1 flex flex-col items-center justify-center px-6 py-20">
-                <div className={`text-center transition-all duration-1000 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            {/* Main content container */}
+            <div className="relative z-10 min-h-screen flex items-center justify-center px-4">
+                <div className="relative">
                     
-                    {/* Floating 404 Icon */}
-                    <div className="mb-8 flex justify-center">
-                        <div className="relative" style={{ animation: 'float 3s ease-in-out infinite' }}>
-                            <div className="absolute inset-0 bg-gradient-to-r from-green-400 via-orange-400 to-teal-400 opacity-20 blur-3xl"></div>
-                            <div className="relative w-32 h-32 rounded-3xl border border-white/[0.08] bg-white/[0.02] backdrop-blur-xl flex items-center justify-center">
-                                <AlertTriangle className="w-16 h-16 text-orange-400" style={{ animation: 'rotate 20s linear infinite' }} />
-                            </div>
-                        </div>
+                    {/* Left geometric pattern - Dotted spiral */}
+                    <div className="absolute left-[-300px] top-1/2 -translate-y-1/2 w-[500px] h-[500px] pointer-events-none">
+                        <svg viewBox="0 0 500 500" className="w-full h-full" style={{ animation: 'spiral 30s linear infinite' }}>
+                            {Array.from({ length: 12 }, (_, ring) => {
+                                const dots = 40 - ring * 2
+                                const radius = 200 - ring * 15
+                                return Array.from({ length: dots }, (_, i) => {
+                                    const angle = (i / dots) * Math.PI * 2
+                                    const x = 250 + Math.cos(angle) * radius
+                                    const y = 250 + Math.sin(angle) * radius
+                                    return (
+                                        <circle
+                                            key={`${ring}-${i}`}
+                                            cx={x}
+                                            cy={y}
+                                            r="2"
+                                            fill={`rgba(16, 185, 129, ${0.3 - ring * 0.02})`}
+                                        />
+                                    )
+                                })
+                            })}
+                        </svg>
                     </div>
 
-                    {/* 404 Number with gradient */}
-                    <h1 className="text-[120px] sm:text-[160px] md:text-[200px] font-black leading-none tracking-tighter mb-4">
-                        <span className="bg-gradient-to-r from-green-400 via-orange-400 to-teal-400 bg-clip-text text-transparent">
-                            404
-                        </span>
-                    </h1>
+                    {/* Right geometric pattern - Circular rings with dots */}
+                    <div className="absolute right-[-300px] top-1/2 -translate-y-1/2 w-[500px] h-[500px] pointer-events-none">
+                        <svg viewBox="0 0 500 500" className="w-full h-full">
+                            {/* Outer rings */}
+                            {[0, 1, 2].map((ring) => (
+                                <g key={ring}>
+                                    <circle
+                                        cx="250"
+                                        cy="250"
+                                        r={180 + ring * 40}
+                                        fill="none"
+                                        stroke={`rgba(16, 185, 129, ${0.3 - ring * 0.1})`}
+                                        strokeWidth="1"
+                                        style={{ animation: `pulse-ring ${4 + ring}s ease-in-out infinite` }}
+                                    />
+                                    {/* Dots on ring */}
+                                    {Array.from({ length: 60 }, (_, i) => {
+                                        const angle = (i / 60) * Math.PI * 2
+                                        const radius = 180 + ring * 40
+                                        const x = 250 + Math.cos(angle) * radius
+                                        const y = 250 + Math.sin(angle) * radius
+                                        return (
+                                            <circle
+                                                key={i}
+                                                cx={x}
+                                                cy={y}
+                                                r="1.5"
+                                                fill={`rgba(16, 185, 129, ${0.4 - ring * 0.1})`}
+                                            />
+                                        )
+                                    })}
+                                </g>
+                            ))}
+                            {/* Diagonal line pattern */}
+                            {Array.from({ length: 20 }, (_, i) => (
+                                <line
+                                    key={`line-${i}`}
+                                    x1={280 + i * 8}
+                                    y1={100}
+                                    x2={300 + i * 8}
+                                    y2={140}
+                                    stroke={`rgba(16, 185, 129, ${0.2})`}
+                                    strokeWidth="1"
+                                />
+                            ))}
+                        </svg>
+                    </div>
 
-                    {/* Error message */}
-                    <div className="mb-8">
-                        <h2 className="text-3xl sm:text-4xl font-bold mb-3 tracking-tight">
+                    {/* Central content */}
+                    <div 
+                        className="text-center relative z-20"
+                        style={{ 
+                            opacity: loaded ? 1 : 0,
+                            animation: loaded ? 'fade-in-up 0.8s ease-out' : 'none'
+                        }}
+                    >
+                        {/* 404 with spiral */}
+                        <div className="relative inline-block mb-8">
+                            <h1 className="text-[180px] md:text-[240px] font-black leading-none tracking-tighter relative z-10">
+                                <span className="text-white">4</span>
+                                <span className="relative inline-block mx-4">
+                                    {/* Spiral SVG in the "0" */}
+                                    <span className="text-white">0</span>
+                                    <div className="absolute inset-0 flex items-center justify-center" style={{ animation: 'spiral 8s linear infinite' }}>
+                                        <svg viewBox="0 0 100 100" className="w-[80%] h-[80%]">
+                                            <path
+                                                d="M 50 50 Q 50 30, 65 35 T 70 50 Q 70 65, 55 65 T 45 50 Q 45 40, 52 42"
+                                                fill="none"
+                                                stroke="rgba(16, 185, 129, 0.6)"
+                                                strokeWidth="3"
+                                                strokeLinecap="round"
+                                            />
+                                            <circle cx="52" cy="42" r="3" fill="rgb(16, 185, 129)" />
+                                        </svg>
+                                    </div>
+                                </span>
+                                <span className="text-white">4</span>
+                            </h1>
+                            {/* Glow effect behind 404 */}
+                            <div 
+                                className="absolute inset-0 -z-10 blur-3xl bg-green-500/20"
+                                style={{ animation: 'glow 3s ease-in-out infinite' }}
+                            />
+                        </div>
+
+                        {/* Page Not Found text */}
+                        <h2 
+                            className="text-4xl md:text-5xl font-bold mb-4 tracking-tight"
+                            style={{ 
+                                animation: loaded ? 'fade-in-up 0.8s ease-out 0.2s backwards' : 'none'
+                            }}
+                        >
                             Page Not Found
                         </h2>
-                        <p className="text-lg text-white/50 max-w-md mx-auto leading-relaxed">
-                            The page you're looking for doesn't exist or has been moved.
+                        
+                        <p 
+                            className="text-lg text-gray-400 mb-12 max-w-md mx-auto"
+                            style={{ 
+                                animation: loaded ? 'fade-in-up 0.8s ease-out 0.3s backwards' : 'none'
+                            }}
+                        >
+                            Sorry, we couldn't find the page you're looking for.
                         </p>
-                    </div>
 
-                    {/* Action buttons - Same style as homepage */}
-                    <div className={`flex flex-col sm:flex-row gap-4 justify-center mt-12 transition-all duration-1000 delay-300 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                        <button
-                            onClick={() => navigate(-1)}
-                            className="group flex items-center justify-center gap-2 px-6 py-3 rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-xl hover:border-white/20 hover:bg-white/[0.05] transition-all hover:-translate-y-1 hover:shadow-xl"
+                        {/* Back To Home button */}
+                        <div
+                            style={{ 
+                                animation: loaded ? 'fade-in-up 0.8s ease-out 0.4s backwards' : 'none'
+                            }}
                         >
-                            <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
-                            <span className="font-medium">Go Back</span>
-                        </button>
-
-                        <Link
-                            to="/"
-                            className="group flex items-center justify-center gap-2 px-6 py-3 rounded-2xl bg-gradient-to-r from-green-400 via-emerald-400 to-teal-400 text-black font-semibold hover:shadow-2xl hover:shadow-teal-500/20 transition-all hover:-translate-y-1"
-                        >
-                            <Home className="w-4 h-4" />
-                            <span>Back to Home</span>
-                        </Link>
-
-                        <button
-                            onClick={() => window.location.reload()}
-                            className="group flex items-center justify-center gap-2 px-6 py-3 rounded-2xl border border-white/[0.06] bg-white/[0.02] backdrop-blur-xl hover:border-white/20 hover:bg-white/[0.05] transition-all hover:-translate-y-1 hover:shadow-xl"
-                        >
-                            <RefreshCw className="w-4 h-4 group-hover:rotate-180 transition-transform duration-500" />
-                            <span className="font-medium">Refresh</span>
-                        </button>
-                    </div>
-
-                    {/* Helpful links */}
-                    <div className={`mt-16 transition-all duration-1000 delay-500 ${loaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-                        <p className="text-sm text-white/40 mb-4">Or explore by role:</p>
-                        <div className="flex flex-wrap gap-3 justify-center">
                             <Link
-                                to="/farmer"
-                                className="px-4 py-2 rounded-full bg-green-500/10 border border-green-500/20 text-green-400 text-sm font-medium hover:bg-green-500/20 hover:border-green-500/40 transition-all"
+                                to="/"
+                                className="inline-block px-8 py-4 bg-green-600 hover:bg-green-500 text-white font-semibold text-lg rounded-lg transition-all duration-300 transform hover:scale-105 hover:shadow-[0_0_30px_rgba(16,185,129,0.5)]"
                             >
-                                🌾 Farmer
-                            </Link>
-                            <Link
-                                to="/mandi"
-                                className="px-4 py-2 rounded-full bg-orange-500/10 border border-orange-500/20 text-orange-400 text-sm font-medium hover:bg-orange-500/20 hover:border-orange-500/40 transition-all"
-                            >
-                                🏪 Mandi
-                            </Link>
-                            <Link
-                                to="/retailer"
-                                className="px-4 py-2 rounded-full bg-teal-500/10 border border-teal-500/20 text-teal-400 text-sm font-medium hover:bg-teal-500/20 hover:border-teal-500/40 transition-all"
-                            >
-                                🛒 Retailer
+                                Back To Home
                             </Link>
                         </div>
                     </div>
                 </div>
-            </main>
-
-            {/* Footer */}
-            <footer className="relative z-10 text-center py-6 text-xs text-white/30">
-                FoodChain AI © 2025 • Powered by AI
-            </footer>
+            </div>
         </div>
     )
 }
