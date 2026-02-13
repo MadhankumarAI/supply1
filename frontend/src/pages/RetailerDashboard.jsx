@@ -444,14 +444,6 @@ export default function RetailerDashboard() {
                             </span>
                         </button>
                         
-                        <button
-                            onClick={() => loadAll()}
-                            className="p-2 border border-white/[0.08] hover:border-[#14b8a6]/30 hover:bg-white/[0.02] transition-colors"
-                            title="Refresh data"
-                        >
-                            <RefreshCw className="w-4 h-4 text-white/40 hover:text-[#14b8a6]" />
-                        </button>
-                        
                         <div style={{ fontFamily: "'JetBrains Mono', monospace" }} className="text-[10px] text-white/30 tracking-wider">
                             SYNC: {lastUpdated.toLocaleTimeString('en-US', { hour12: false })}
                         </div>
