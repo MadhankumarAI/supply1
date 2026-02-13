@@ -429,12 +429,7 @@ export default function RetailerDashboard() {
                         <div style={{ fontFamily: "'JetBrains Mono', monospace" }} className="text-xs font-bold tracking-[0.15em] text-[#14b8a6]">
                             RETAIL OPERATIONS
                         </div>
-                        {autoRefresh && (
-                            <div className="flex items-center gap-2 px-2 py-1 bg-white/[0.05] border border-white/[0.08]">
-                                <div className="w-2 h-2 rounded-full bg-[#00ff88] animate-pulse"></div>
-                                <span className="text-[10px] font-mono text-white/40 tracking-wider">LIVE</span>
-                            </div>
-                        )}
+                        {/* LIVE indicator removed - no auto-refresh */}
                     </div>
                     
                     <div className="flex items-center gap-3">
