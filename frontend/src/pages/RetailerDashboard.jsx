@@ -445,6 +445,17 @@ export default function RetailerDashboard() {
                     
                     <div className="flex items-center gap-3">
                         <button
+                            onClick={() => window.location.href = '/retailer/search'}
+                            className="px-4 py-2 border border-[#14b8a6]/30 bg-[#14b8a6]/10 hover:bg-[#14b8a6]/20 transition-colors flex items-center gap-2"
+                            title="Search wholesale mandis"
+                        >
+                            <ShoppingCart className="w-4 h-4 text-[#14b8a6]" />
+                            <span style={{ fontFamily: "'JetBrains Mono', monospace" }} className="text-xs font-bold tracking-wider text-[#14b8a6]">
+                                MANDI SEARCH
+                            </span>
+                        </button>
+                        
+                        <button
                             onClick={() => loadAll()}
                             className="p-2 border border-white/[0.08] hover:border-[#14b8a6]/30 hover:bg-white/[0.02] transition-colors"
                             title="Refresh data"
