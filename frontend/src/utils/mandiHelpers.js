@@ -1,5 +1,5 @@
 // Helper to get all unique mandis from all scenarios
-import { SCENARIOS } from './mandiScenarios'
+import { SCENARIOS } from '../data/mandiScenarios'
 
 export function getAllMandis() {
   const mandiMap = new Map()
