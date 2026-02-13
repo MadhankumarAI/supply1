@@ -8,6 +8,7 @@ import MandiDashboard from './pages/MandiDashboard.jsx'
 import RetailerLandingPage from './pages/RetailerLandingPage.jsx'
 import RetailerDashboard from './pages/RetailerDashboard.jsx'
 import RetailerOrders from './pages/RetailerOrders.jsx'
+import NotFound from './pages/NotFound.jsx'
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
       <Route path="/retailer" element={<RetailerLandingPage />} />
       <Route path="/retailer/dashboard" element={<RetailerDashboard />} />
       <Route path="/retailer/orders" element={<RetailerOrders />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   )
 }
