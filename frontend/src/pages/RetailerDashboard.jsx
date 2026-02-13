@@ -40,12 +40,42 @@ function MapFly({ center }) {
 function useGoogleTranslate() {
     useEffect(() => {
         const s = document.createElement('style')
-        s.textContent = `.goog-te-banner-frame{display:none!important}body{top:0!important}.goog-te-gadget{font-size:0!important}.goog-te-gadget .goog-te-combo{background:rgba(20,184,166,.15)!important;color:#5eead4!important;border:1.5px solid rgba(20,184,166,.3)!important;border-radius:10px!important;padding:6px 12px!important;font-size:12px!important;font-weight:600!important;outline:none!important;cursor:pointer!important}.goog-te-gadget .goog-te-combo:hover{background:rgba(20,184,166,.2)!important;border-color:rgba(20,184,166,.5)!important}.goog-te-gadget .goog-te-combo option{background:#1a1a1a!important;color:#fff!important}#google_translate_element{display:inline-block}.skiptranslate iframe{display:none!important}`
+        s.textContent = `.goog-te-banner-frame{display:none!important}body{top:0!important}.goog-te-gadget{font-size:0!important}.goog-te-gadget .goog-te-combo{background:rgba(20,184,166,.15)!important;color:#5eead4!important;border:1.5px solid rgba(20,184,166,.3)!important;border-radius:2px!important;padding:6px 12px!important;font-size:11px!important;font-weight:600!important;outline:none!important;cursor:pointer!important;font-family:monospace!important;letter-spacing:0.5px!important}.goog-te-gadget .goog-te-combo:hover{background:rgba(20,184,166,.2)!important;border-color:rgba(20,184,166,.5)!important}.goog-te-gadget .goog-te-combo option{background:#1a1a1a!important;color:#fff!important}#google_translate_element{display:inline-block}.skiptranslate iframe{display:none!important}.goog-te-gadget>span,.goog-logo-link,.goog-te-gadget-icon{display:none!important}`
         document.head.appendChild(s)
         window.googleTranslateElementInit = () => { new window.google.translate.TranslateElement({ pageLanguage: 'en', includedLanguages: 'hi,kn,te,ta,mr,bn,gu,pa,ml', layout: window.google.translate.TranslateElement.InlineLayout.SIMPLE, autoDisplay: false }, 'google_translate_element') }
         if (!document.querySelector('script[src*="translate.google.com"]')) { const sc = document.createElement('script'); sc.src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit'; sc.async = true; document.body.appendChild(sc) }
         else if (window.google?.translate) window.googleTranslateElementInit()
         return () => document.head.removeChild(s)
+    }, [])
+}
+
+// Industrial theme style injection
+function useIndustrialTheme() {
+    useEffect(() => {
+        const style = document.createElement('style')
+        style.textContent = `
+            @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Azeret+Mono:wght@400;500;700&display=swap');
+            
+            * {
+                font-variant-numeric: tabular-nums;
+            }
+            
+            body {
+                background: 
+                    radial-gradient(circle at 10% 10%, rgba(20, 184, 166, 0.03), transparent 50%),
+                    #0a0a0a;
+                background-attachment: fixed;
+            }
+            
+            .industrial-grid {
+                background-image: 
+                    linear-gradient(rgba(20, 184, 166, 0.02) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(20, 184, 166, 0.02) 1px, transparent 1px);
+                background-size: 40px 40px;
+            }
+        `
+        document.head.appendChild(style)
+        return () => document.head.removeChild(style)
     }, [])
 }
 
