@@ -2,11 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
 export default function NotFound() {
-    const [loaded, setLoaded] = useState(false)
-
-    useEffect(() => {
-        setTimeout(() => setLoaded(true), 100)
-    }, [])
+    const loaded = true
 
     return (
         <div className="min-h-screen bg-black text-white overflow-hidden relative flex items-center justify-center">
