@@ -76,6 +76,34 @@
 - ✅ "New Search" button navigation back to search page
 - ✅ Empty state handling when no orders exist
 
+### 4.1. NEW MAP FEATURE IN ORDER HISTORY - ✅ WORKING
+**Status**: Map feature fully functional and working correctly
+**Features Tested**:
+- ✅ Map column present in order history table
+- ✅ Green map icon button in each order row
+- ✅ Map modal opens when clicking map icon
+- ✅ Modal header displays "Route to [Mandi Name]" with distance and product details
+- ✅ Leaflet map renders correctly with OpenStreetMap tiles
+- ✅ Green marker for retailer location (Koramangala)
+- ✅ Red marker for selected mandi location
+- ✅ Dotted green route line connecting locations
+- ✅ Map zoom controls functional
+- ✅ Marker popups display location information
+- ✅ Modal footer shows distance, cost, and profit details
+- ✅ X button (top-right) closes modal
+- ✅ Close button (footer) closes modal
+- ✅ Modal can be reopened multiple times
+- ✅ Mobile responsiveness - map icon and modal work on mobile viewport
+- ✅ Multiple orders show different routes to respective mandis
+
+**Map Implementation Details**:
+- Uses React Leaflet 5.0.0 with Leaflet 1.9.4
+- Custom div icons for retailer (green circle) and mandi (red circle) markers
+- Polyline with dash pattern for route visualization
+- Circle overlay around retailer location
+- Modal positioned with backdrop blur effect
+- Proper z-index layering prevents interaction issues
+
 ### 5. Multiple Scenarios Testing - ✅ WORKING
 **Scenarios Tested**:
 - ✅ Scenario 1: "Price vs Distance Trade-off" - Default scenario working
