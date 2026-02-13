@@ -111,15 +111,6 @@ function LanguageSelector() {
 
         if (window.google && window.google.translate) {
             initGoogleTranslate()
-        } else {
-            // Poll for script load
-            const interval = setInterval(() => {
-                if (window.google && window.google.translate) {
-                    clearInterval(interval)
-                    initGoogleTranslate()
-                }
-            }, 100)
-            return () => clearInterval(interval)
         }
     }, [])
 
