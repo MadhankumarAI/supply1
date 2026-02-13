@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { MapContainer, TileLayer, Marker, Popup, Polyline, Circle } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, Circle, useMap } from 'react-leaflet'
 import { ArrowLeft, TrendingUp, Clock, MapPin, Package, AlertCircle, Check } from 'lucide-react'
 import { useMandi } from '../context/MandiContext'
 import { 
@@ -11,7 +11,9 @@ import {
   formatCurrency 
 } from '../utils/mandiUtils'
 import 'leaflet/dist/leaflet.css'
+import 'leaflet-routing-machine/dist/leaflet-routing-machine.css'
 import L from 'leaflet'
+import 'leaflet-routing-machine'
 
 // Fix leaflet icon issue
 delete L.Icon.Default.prototype._getIconUrl
@@ -20,6 +22,53 @@ L.Icon.Default.mergeOptions({
   iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
   shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
 })
+
+// Routing component for hovered mandi
+function RoutingMachine({ start, end, isHovered }) {
+  const map = useMap()
+
+  useEffect(() => {
+    if (!map || !start || !end || !isHovered) return
+
+    const routingControl = L.Routing.control({
+      waypoints: [
+        L.latLng(start[0], start[1]),
+        L.latLng(end[0], end[1])
+      ],
+      routeWhileDragging: false,
+      addWaypoints: false,
+      draggableWaypoints: false,
+      fitSelectedRoutes: false,
+      showAlternatives: false,
+      lineOptions: {
+        styles: [
+          { 
+            color: '#10b981', 
+            opacity: 0.9, 
+            weight: 4 
+          }
+        ],
+        extendToWaypoints: true,
+        missingRouteTolerance: 0
+      },
+      createMarker: function() { return null; },
+      show: false,
+    }).addTo(map)
+
+    const container = routingControl.getContainer()
+    if (container) {
+      container.style.display = 'none'
+    }
+
+    return () => {
+      if (map && routingControl) {
+        map.removeControl(routingControl)
+      }
+    }
+  }, [map, start, end, isHovered])
+
+  return null
+}
 
 export default function MandiResults() {
   const navigate = useNavigate()
