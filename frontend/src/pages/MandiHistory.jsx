@@ -1,15 +1,44 @@
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { ArrowLeft, Package, TrendingUp, MapPin, Clock, Calendar, ShoppingBag } from 'lucide-react'
+import { ArrowLeft, Package, TrendingUp, MapPin, Clock, Calendar, ShoppingBag, Map, X } from 'lucide-react'
+import { MapContainer, TileLayer, Marker, Polyline, Popup, Circle } from 'react-leaflet'
 import { useMandi } from '../context/MandiContext'
 import { formatCurrency, formatDate } from '../utils/mandiUtils'
+import { RETAILER_LOCATION } from '../data/mandiScenarios'
+import L from 'leaflet'
+import 'leaflet/dist/leaflet.css'
+
+// Fix leaflet icon issue
+delete L.Icon.Default.prototype._getIconUrl
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+})
 
 export default function MandiHistory() {
   const navigate = useNavigate()
   const { orderHistory } = useMandi()
+  const [selectedOrderForMap, setSelectedOrderForMap] = useState(null)
 
   const totalOrders = orderHistory.length
   const totalProfit = orderHistory.reduce((sum, order) => sum + order.profit, 0)
   const totalQuantity = orderHistory.reduce((sum, order) => sum + order.quantity, 0)
+
+  // Custom icons for map
+  const retailerIcon = L.divIcon({
+    html: '<div style="background: #10b981; width: 24px; height: 24px; border-radius: 50%; border: 3px solid white; box-shadow: 0 2px 8px rgba(0,0,0,0.3);"></div>',
+    className: 'custom-icon',
+    iconSize: [24, 24],
+    iconAnchor: [12, 12]
+  })
+
+  const mandiIcon = L.divIcon({
+    html: '<div style="background: #ef4444; width: 20px; height: 20px; border-radius: 50%; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.3);"></div>',
+    className: 'custom-icon',
+    iconSize: [20, 20],
+    iconAnchor: [10, 10]
+  })
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
