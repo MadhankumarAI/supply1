@@ -219,6 +219,123 @@ export default function MandiHistory() {
           )}
         </div>
       </div>
+
+      {/* Map Modal */}
+      {selectedOrderForMap && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-sm">
+          <div className="bg-gray-800 border border-gray-700 rounded-2xl overflow-hidden w-[90vw] h-[80vh] max-w-6xl shadow-2xl">
+            {/* Modal Header */}
+            <div className="bg-gray-900/50 border-b border-gray-700 px-6 py-4 flex items-center justify-between">
+              <div>
+                <h3 className="text-xl font-bold text-white mb-1">
+                  Route to {selectedOrderForMap.mandi.name}
+                </h3>
+                <p className="text-sm text-gray-400">
+                  {selectedOrderForMap.distance} km • {selectedOrderForMap.product} ({selectedOrderForMap.quantity} kg)
+                </p>
+              </div>
+              <button
+                onClick={() => setSelectedOrderForMap(null)}
+                className="p-2 hover:bg-gray-700 rounded-lg transition-colors"
+              >
+                <X className="w-6 h-6 text-gray-400 hover:text-white" />
+              </button>
+            </div>
+
+            {/* Map Container */}
+            <div className="h-[calc(100%-80px)]">
+              <MapContainer
+                center={[
+                  (RETAILER_LOCATION.latitude + (selectedOrderForMap.mandi.latitude || RETAILER_LOCATION.latitude)) / 2,
+                  (RETAILER_LOCATION.longitude + (selectedOrderForMap.mandi.longitude || RETAILER_LOCATION.longitude)) / 2
+                ]}
+                zoom={12}
+                style={{ height: '100%', width: '100%' }}
+                className="z-0"
+              >
+                <TileLayer
+                  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                />
+
+                {/* Retailer Marker */}
+                <Marker
+                  position={[RETAILER_LOCATION.latitude, RETAILER_LOCATION.longitude]}
+                  icon={retailerIcon}
+                >
+                  <Popup>
+                    <div className="text-sm font-semibold">{RETAILER_LOCATION.name}</div>
+                    <div className="text-xs text-gray-600">Your Location</div>
+                  </Popup>
+                </Marker>
+
+                {/* Retailer Circle */}
+                <Circle
+                  center={[RETAILER_LOCATION.latitude, RETAILER_LOCATION.longitude]}
+                  radius={500}
+                  pathOptions={{ color: '#10b981', fillColor: '#10b981', fillOpacity: 0.1 }}
+                />
+
+                {/* Mandi Marker - only if coordinates exist */}
+                {selectedOrderForMap.mandi.latitude && selectedOrderForMap.mandi.longitude && (
+                  <>
+                    <Marker
+                      position={[selectedOrderForMap.mandi.latitude, selectedOrderForMap.mandi.longitude]}
+                      icon={mandiIcon}
+                    >
+                      <Popup>
+                        <div className="text-sm font-semibold">{selectedOrderForMap.mandi.name}</div>
+                        <div className="text-xs text-gray-600 mt-1">{selectedOrderForMap.mandi.location}</div>
+                        <div className="text-xs text-gray-600">{selectedOrderForMap.distance} km away</div>
+                      </Popup>
+                    </Marker>
+
+                    {/* Route Line */}
+                    <Polyline
+                      positions={[
+                        [RETAILER_LOCATION.latitude, RETAILER_LOCATION.longitude],
+                        [selectedOrderForMap.mandi.latitude, selectedOrderForMap.mandi.longitude]
+                      ]}
+                      pathOptions={{
+                        color: '#10b981',
+                        weight: 3,
+                        opacity: 0.8,
+                        dashArray: '10, 10'
+                      }}
+                    />
+                  </>
+                )}
+              </MapContainer>
+            </div>
+
+            {/* Map Footer with Order Details */}
+            <div className="bg-gray-900/50 border-t border-gray-700 px-6 py-4">
+              <div className="flex items-center justify-between text-sm">
+                <div className="flex items-center gap-6">
+                  <div>
+                    <span className="text-gray-400">Distance:</span>
+                    <span className="text-white font-semibold ml-2">{selectedOrderForMap.distance} km</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-400">Cost:</span>
+                    <span className="text-white font-semibold ml-2">{formatCurrency(selectedOrderForMap.totalCost)}</span>
+                  </div>
+                  <div>
+                    <span className="text-gray-400">Profit:</span>
+                    <span className="text-green-400 font-semibold ml-2">{formatCurrency(selectedOrderForMap.profit)}</span>
+                  </div>
+                </div>
+                <button
+                  onClick={() => setSelectedOrderForMap(null)}
+                  className="px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-lg transition-all"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
