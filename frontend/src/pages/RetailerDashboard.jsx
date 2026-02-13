@@ -410,16 +410,10 @@ export default function RetailerDashboard() {
                 
                 {/* Bottom Actions */}
                 <div className="border-t border-white/[0.08]">
-                    <button
-                        onClick={() => setAutoRefresh(!autoRefresh)}
-                        className="w-full h-[60px] flex items-center justify-center text-white/30 hover:text-[#14b8a6] transition-colors"
-                        title={autoRefresh ? 'Disable auto-refresh' : 'Enable auto-refresh'}
-                    >
-                        {autoRefresh ? <Radio className="w-5 h-5" /> : <Activity className="w-5 h-5" />}
-                    </button>
+                    {/* Auto-refresh toggle removed - no auto-refresh functionality */}
                     <button
                         onClick={handleLogout}
-                        className="w-full h-[60px] flex items-center justify-center text-white/30 hover:text-red-400 transition-colors border-t border-white/[0.08]"
+                        className="w-full h-[60px] flex items-center justify-center text-white/30 hover:text-red-400 transition-colors"
                         title="Logout"
                     >
                         <X className="w-5 h-5" />
