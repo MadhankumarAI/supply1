@@ -1,18 +1,37 @@
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react';
 
 const MandiContext = createContext();
 
 export function MandiProvider({ children }) {
-  const [orderHistory, setOrderHistory] = useState([]);
+  // Load from localStorage on mount
+  const [orderHistory, setOrderHistory] = useState(() => {
+    const saved = localStorage.getItem('orderHistory');
+    return saved ? JSON.parse(saved) : [];
+  });
+  
   const [currentSearch, setCurrentSearch] = useState(null);
   const [selectedMandi, setSelectedMandi] = useState(null);
-  const [mandiNotifications, setMandiNotifications] = useState([]);
+  
+  const [mandiNotifications, setMandiNotifications] = useState(() => {
+    const saved = localStorage.getItem('mandiNotifications');
+    return saved ? JSON.parse(saved) : [];
+  });
+
+  // Save to localStorage whenever notifications change
+  useEffect(() => {
+    localStorage.setItem('mandiNotifications', JSON.stringify(mandiNotifications));
+  }, [mandiNotifications]);
+
+  // Save to localStorage whenever order history changes
+  useEffect(() => {
+    localStorage.setItem('orderHistory', JSON.stringify(orderHistory));
+  }, [orderHistory]);
 
   const addOrder = (order) => {
     const newOrder = {
       ...order,
       id: Date.now(),
-      orderDate: new Date(),
+      orderDate: new Date().toISOString(), // Convert to string for localStorage
       status: 'confirmed'
     };
     setOrderHistory(prev => [newOrder, ...prev]);
@@ -28,7 +47,7 @@ export function MandiProvider({ children }) {
       totalCost: order.totalCost,
       profit: order.profit,
       distance: order.distance,
-      timestamp: new Date(),
+      timestamp: new Date().toISOString(), // Convert to string for localStorage
       read: false,
       type: 'new_order'
     };
