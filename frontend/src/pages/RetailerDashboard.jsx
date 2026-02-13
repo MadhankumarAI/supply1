@@ -70,6 +70,9 @@ export default function RetailerDashboard() {
     const [profile, setProfile] = useState(null)
     const [items, setItems] = useState([])
     const [orders, setOrders] = useState([])
+    const [lastUpdated, setLastUpdated] = useState(new Date())
+    const [autoRefresh, setAutoRefresh] = useState(true)
+    const [selectedOrder, setSelectedOrder] = useState(null)
     
     // Modals
     const [showAddItem, setShowAddItem] = useState(false)
