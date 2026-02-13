@@ -191,11 +191,12 @@ export function formatCurrency(amount) {
 
 // Format date for order history
 export function formatDate(date) {
+  const dateObj = typeof date === 'string' ? new Date(date) : date;
   return new Intl.DateTimeFormat('en-IN', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit'
-  }).format(date);
+  }).format(dateObj);
 }
