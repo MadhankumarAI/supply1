@@ -88,6 +88,8 @@ export default function MandiDashboard() {
     const [tab, setTab] = useState('overview')
     const [loading, setLoading] = useState(true)
     const [overview, setOverview] = useState(null)
+    const [selectedMandiId, setSelectedMandiId] = useState('m1') // Default to KR Market
+    const allMandis = getAllMandis()
     const [stress, setStress] = useState(null)
     const [forecast, setForecast] = useState(null)
     const [trucks, setTrucks] = useState(null)
