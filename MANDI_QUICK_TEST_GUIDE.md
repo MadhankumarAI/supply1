@@ -2,16 +2,16 @@
 
 ## ⚠️ CORRECT URL TO USE:
 
-**❌ WRONG:** `https://supplychain-ui.preview.emergentagent.com/retailer/dashboard/search`
+**❌ WRONG:** `https://agrimarket-56.preview.emergentagent.com/retailer/dashboard/search`
 
-**✅ CORRECT:** `https://supplychain-ui.preview.emergentagent.com/mandi/search`
+**✅ CORRECT:** `https://agrimarket-56.preview.emergentagent.com/mandi/search`
 
 ---
 
 ## 🚀 5-MINUTE QUICK TEST
 
 ### Step 1: Go to Search Page
-**URL:** `https://supplychain-ui.preview.emergentagent.com/mandi/search`
+**URL:** `https://agrimarket-56.preview.emergentagent.com/mandi/search`
 
 **What you'll see:**
 - Header: "Mandi Connect - Bangalore Wholesale Network"
