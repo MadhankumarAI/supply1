@@ -184,6 +184,7 @@
 5. **Multiple Scenarios**: Three different market conditions with varying results
 6. **Responsive Design**: Works on desktop, tablet, and mobile devices
 7. **Edge Case Handling**: Proper messaging for no results and empty states
+8. **NEW MAP FEATURE**: Interactive route visualization in order history with modal popups
 
 ### 🎯 KEY ACHIEVEMENTS
 - **Complete Flow**: Successfully tested end-to-end user journey from search to order history
