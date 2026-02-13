@@ -23,15 +23,8 @@ function FadeIn({ children, delay = 0 }) {
 }
 
 function Counter({ end, suffix = '' }) {
-    const [count, setCount] = useState(0)
     const [ref, visible] = useScrollAnimation()
-    useEffect(() => {
-        if (!visible) return
-        let s = 0; const step = end / 125
-        const t = setInterval(() => { s += step; if (s >= end) { setCount(end); clearInterval(t) } else setCount(Math.floor(s)) }, 16)
-        return () => clearInterval(t)
-    }, [visible, end])
-    return <span ref={ref}>{count.toLocaleString()}{suffix}</span>
+    return <span ref={ref}>{end.toLocaleString()}{suffix}</span>
 }
 
 const features = [
@@ -51,8 +44,7 @@ const metrics = [
 ]
 
 export default function RetailerLandingPage() {
-    const [loaded, setLoaded] = useState(false)
-    useEffect(() => { setTimeout(() => setLoaded(true), 100) }, [])
+    const loaded = true
 
     return (
         <div className="min-h-screen bg-[#0a0a0a] text-white overflow-x-hidden">
