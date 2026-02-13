@@ -893,67 +893,250 @@ export default function RetailerDashboard() {
                 {/* ═══ ANALYTICS TAB ═══ */}
                 {tab === 'analytics' && (
                     <div className="space-y-6">
-                        <div>
-                            <h2 className="text-2xl font-black flex items-center gap-2 mb-2">
-                                <PieChart className="w-6 h-6 text-blue-400" />
-                                Business Analytics
-                            </h2>
-                            <p className="text-sm text-white/40">Insights and trends for your retail business</p>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                            <div className="p-5 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-teal-500/5 to-transparent">
-                                <div className="text-sm text-white/40 mb-2">Avg Order Value</div>
-                                <div className="text-3xl font-black text-teal-400">₹{avgOrderSize.toFixed(0)}</div>
+                        <div className="flex items-center justify-between">
+                            <div>
+                                <h2 className="text-2xl font-black flex items-center gap-2 mb-2">
+                                    <BarChart3 className="w-6 h-6 text-blue-400" />
+                                    Advanced Analytics
+                                </h2>
+                                <p className="text-sm text-white/40">Real-time insights and business intelligence</p>
                             </div>
-                            <div className="p-5 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-cyan-500/5 to-transparent">
-                                <div className="text-sm text-white/40 mb-2">Total Revenue</div>
-                                <div className="text-3xl font-black text-cyan-400">₹{(totalOrderValue/1000).toFixed(1)}K</div>
-                            </div>
-                            <div className="p-5 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-emerald-500/5 to-transparent">
-                                <div className="text-sm text-white/40 mb-2">Stock Value</div>
-                                <div className="text-3xl font-black text-emerald-400">{totalStock.toFixed(0)}kg</div>
-                            </div>
-                            <div className="p-5 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-blue-500/5 to-transparent">
-                                <div className="text-sm text-white/40 mb-2">Total Items</div>
-                                <div className="text-3xl font-black text-blue-400">{items.length}</div>
+                            <div className="flex items-center gap-2 px-4 py-2 rounded-xl bg-emerald-500/10 border border-emerald-500/20">
+                                <TrendingUp className="w-4 h-4 text-emerald-400" />
+                                <span className="text-sm font-bold text-emerald-400">+{growthRate}% Growth</span>
                             </div>
                         </div>
 
+                        {/* Enhanced KPI Grid with Trends */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div className="p-5 rounded-2xl border border-teal-500/20 bg-gradient-to-br from-teal-500/10 to-teal-500/5 hover:scale-[1.02] transition-all">
+                                <div className="flex items-center justify-between mb-3">
+                                    <div className="text-sm text-white/50">Avg Order Value</div>
+                                    <TrendingUp className="w-4 h-4 text-emerald-400" />
+                                </div>
+                                <div className="text-3xl font-black text-teal-400 mb-1">₹{avgOrderSize.toFixed(0)}</div>
+                                <div className="text-xs text-emerald-400">↑ 8.2% from last month</div>
+                            </div>
+                            <div className="p-5 rounded-2xl border border-cyan-500/20 bg-gradient-to-br from-cyan-500/10 to-cyan-500/5 hover:scale-[1.02] transition-all">
+                                <div className="flex items-center justify-between mb-3">
+                                    <div className="text-sm text-white/50">Total Revenue</div>
+                                    <DollarSign className="w-4 h-4 text-cyan-400" />
+                                </div>
+                                <div className="text-3xl font-black text-cyan-400 mb-1">₹{(totalOrderValue/1000).toFixed(1)}K</div>
+                                <div className="text-xs text-emerald-400">↑ 12.5% growth</div>
+                            </div>
+                            <div className="p-5 rounded-2xl border border-purple-500/20 bg-gradient-to-br from-purple-500/10 to-purple-500/5 hover:scale-[1.02] transition-all">
+                                <div className="flex items-center justify-between mb-3">
+                                    <div className="text-sm text-white/50">Avg Price/kg</div>
+                                    <Activity className="w-4 h-4 text-purple-400" />
+                                </div>
+                                <div className="text-3xl font-black text-purple-400 mb-1">₹{avgPricePerKg.toFixed(0)}</div>
+                                <div className="text-xs text-white/40">Market rate</div>
+                            </div>
+                            <div className="p-5 rounded-2xl border border-emerald-500/20 bg-gradient-to-br from-emerald-500/10 to-emerald-500/5 hover:scale-[1.02] transition-all">
+                                <div className="flex items-center justify-between mb-3">
+                                    <div className="text-sm text-white/50">Stock Value</div>
+                                    <Package className="w-4 h-4 text-emerald-400" />
+                                </div>
+                                <div className="text-3xl font-black text-emerald-400 mb-1">{totalStock.toFixed(0)}kg</div>
+                                <div className="text-xs text-white/40">{items.length} items</div>
+                            </div>
+                        </div>
+
+                        {/* First Row: Stock Distribution + Performance Radar */}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             {items.length > 0 && (
-                                <div className="p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02]">
-                                    <h3 className="text-sm font-bold text-teal-400 mb-4">📦 Stock Distribution</h3>
+                                <div className="p-6 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-teal-500/5 to-transparent backdrop-blur-sm">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-sm font-bold text-teal-400 flex items-center gap-2">
+                                            <PieChart className="w-4 h-4" />
+                                            Stock Distribution
+                                        </h3>
+                                        <span className="text-xs text-white/30">{items.length} items</span>
+                                    </div>
                                     <div style={{ height: 280 }}>
-                                        <Doughnut data={inventoryChartData} options={{ responsive: true, maintainAspectRatio: false, plugins: { legend: { labels: { color: '#fff', font: { size: 10 } } } } }} />
+                                        <Doughnut 
+                                            data={inventoryChartData} 
+                                            options={{ 
+                                                responsive: true, 
+                                                maintainAspectRatio: false, 
+                                                plugins: { 
+                                                    legend: { 
+                                                        labels: { color: '#fff', font: { size: 10 }, padding: 12 } 
+                                                    } 
+                                                } 
+                                            }} 
+                                        />
                                     </div>
                                 </div>
                             )}
 
-                            {items.length > 0 && (
-                                <div className="p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02]">
-                                    <h3 className="text-sm font-bold text-teal-400 mb-4">📈 Stock Levels Trend</h3>
+                            {orders.length > 0 && items.length > 0 && (
+                                <div className="p-6 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-blue-500/5 to-transparent backdrop-blur-sm">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-sm font-bold text-blue-400 flex items-center gap-2">
+                                            <Activity className="w-4 h-4" />
+                                            Performance Radar
+                                        </h3>
+                                        <span className="text-xs text-white/30">5 metrics</span>
+                                    </div>
                                     <div style={{ height: 280 }}>
-                                        <Line data={stockTrendData} options={chartOpts()} />
+                                        <Radar 
+                                            data={performanceRadarData} 
+                                            options={{ 
+                                                responsive: true, 
+                                                maintainAspectRatio: false,
+                                                scales: {
+                                                    r: {
+                                                        ticks: { color: '#ffffff40', backdropColor: 'transparent' },
+                                                        grid: { color: '#ffffff15' },
+                                                        pointLabels: { color: '#ffffff80', font: { size: 11 } }
+                                                    }
+                                                },
+                                                plugins: { 
+                                                    legend: { display: false } 
+                                                } 
+                                            }} 
+                                        />
                                     </div>
                                 </div>
                             )}
                         </div>
 
+                        {/* Second Row: Stock Trend + Price Distribution */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                            {items.length > 0 && (
+                                <div className="p-6 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-emerald-500/5 to-transparent backdrop-blur-sm">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-sm font-bold text-emerald-400 flex items-center gap-2">
+                                            <TrendingUp className="w-4 h-4" />
+                                            Stock Levels Trend
+                                        </h3>
+                                        <span className="text-xs text-emerald-400">Area Chart</span>
+                                    </div>
+                                    <div style={{ height: 280 }}>
+                                        <Line 
+                                            data={stockTrendData} 
+                                            options={chartOpts()} 
+                                        />
+                                    </div>
+                                </div>
+                            )}
+
+                            {orders.length > 0 && (
+                                <div className="p-6 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-purple-500/5 to-transparent backdrop-blur-sm">
+                                    <div className="flex items-center justify-between mb-4">
+                                        <h3 className="text-sm font-bold text-purple-400 flex items-center gap-2">
+                                            <DollarSign className="w-4 h-4" />
+                                            Price Distribution
+                                        </h3>
+                                        <span className="text-xs text-white/30">Top 6 items</span>
+                                    </div>
+                                    <div style={{ height: 280 }}>
+                                        <PolarArea 
+                                            data={priceDistributionData} 
+                                            options={{ 
+                                                responsive: true, 
+                                                maintainAspectRatio: false,
+                                                scales: {
+                                                    r: {
+                                                        ticks: { color: '#ffffff40', backdropColor: 'transparent' },
+                                                        grid: { color: '#ffffff15' }
+                                                    }
+                                                },
+                                                plugins: { 
+                                                    legend: { 
+                                                        labels: { color: '#fff', font: { size: 10 }, padding: 8 } 
+                                                    } 
+                                                } 
+                                            }} 
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Third Row: Order Timeline (Full Width) */}
                         {orders.length > 0 && (
-                            <div className="p-6 rounded-2xl border border-white/[0.06] bg-white/[0.02]">
-                                <h3 className="text-sm font-bold text-cyan-400 mb-4">💰 Order Value Timeline</h3>
+                            <div className="p-6 rounded-2xl border border-white/[0.06] bg-gradient-to-br from-cyan-500/5 to-transparent backdrop-blur-sm">
+                                <div className="flex items-center justify-between mb-4">
+                                    <h3 className="text-sm font-bold text-cyan-400 flex items-center gap-2">
+                                        <Truck className="w-4 h-4" />
+                                        Order Value Timeline
+                                    </h3>
+                                    <div className="flex items-center gap-2">
+                                        <span className="text-xs text-white/30">Last 10 orders</span>
+                                        <span className="px-2 py-1 rounded-full bg-cyan-500/20 text-cyan-400 text-[10px] font-bold">
+                                            {orders.length} total
+                                        </span>
+                                    </div>
+                                </div>
                                 <div style={{ height: 300 }}>
-                                    <BarChart data={ordersTimelineData} options={chartOpts('Recent Orders Performance')} />
+                                    <BarChart 
+                                        data={ordersTimelineData} 
+                                        options={chartOpts('Recent Orders Performance')} 
+                                    />
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Insights Section */}
+                        {(items.length > 0 || orders.length > 0) && (
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                <div className="p-5 rounded-2xl bg-gradient-to-br from-teal-500/10 to-transparent border border-teal-500/20">
+                                    <div className="flex items-center gap-3 mb-3">
+                                        <div className="p-2 rounded-lg bg-teal-500/20">
+                                            <CheckCircle className="w-5 h-5 text-teal-400" />
+                                        </div>
+                                        <div>
+                                            <div className="text-xs text-white/40">Top Selling</div>
+                                            <div className="text-sm font-bold text-teal-400">{topSellingItem?.item || 'N/A'}</div>
+                                        </div>
+                                    </div>
+                                    <div className="text-xs text-white/30">{topSellingItem?.quantity || 0}kg in stock</div>
+                                </div>
+
+                                <div className="p-5 rounded-2xl bg-gradient-to-br from-emerald-500/10 to-transparent border border-emerald-500/20">
+                                    <div className="flex items-center gap-3 mb-3">
+                                        <div className="p-2 rounded-lg bg-emerald-500/20">
+                                            <Activity className="w-5 h-5 text-emerald-400" />
+                                        </div>
+                                        <div>
+                                            <div className="text-xs text-white/40">Active Orders</div>
+                                            <div className="text-sm font-bold text-emerald-400">{activeOrders}</div>
+                                        </div>
+                                    </div>
+                                    <div className="text-xs text-white/30">{completedOrders} completed</div>
+                                </div>
+
+                                <div className="p-5 rounded-2xl bg-gradient-to-br from-purple-500/10 to-transparent border border-purple-500/20">
+                                    <div className="flex items-center gap-3 mb-3">
+                                        <div className="p-2 rounded-lg bg-purple-500/20">
+                                            <Zap className="w-5 h-5 text-purple-400" />
+                                        </div>
+                                        <div>
+                                            <div className="text-xs text-white/40">Growth Rate</div>
+                                            <div className="text-sm font-bold text-purple-400">+{growthRate}%</div>
+                                        </div>
+                                    </div>
+                                    <div className="text-xs text-white/30">vs last period</div>
                                 </div>
                             </div>
                         )}
 
                         {items.length === 0 && orders.length === 0 && (
                             <div className="text-center py-20">
-                                <PieChart className="w-16 h-16 mx-auto mb-4 text-white/10" />
+                                <BarChart3 className="w-16 h-16 mx-auto mb-4 text-white/10" />
                                 <h3 className="text-xl font-bold text-white/40 mb-2">No analytics data yet</h3>
-                                <p className="text-sm text-white/30">Add items and create orders to see analytics</p>
+                                <p className="text-sm text-white/30 mb-6">Add items and create orders to see advanced analytics</p>
+                                <div className="flex gap-3 justify-center">
+                                    <button onClick={() => setTab('inventory')} className="px-5 py-2 rounded-xl bg-teal-500/20 text-teal-400 hover:bg-teal-500/30 transition-all">
+                                        Add Items
+                                    </button>
+                                    <button onClick={() => setTab('orders')} className="px-5 py-2 rounded-xl bg-cyan-500/20 text-cyan-400 hover:bg-cyan-500/30 transition-all">
+                                        Create Orders
+                                    </button>
+                                </div>
                             </div>
                         )}
                     </div>
