@@ -688,14 +688,8 @@ export default function RetailerDashboard() {
                         </div>
                     </div>
                 )}
-                                    <p className="text-white/60 text-sm">Your retail command center • Manage inventory • Track orders • Optimize stock</p>
-                                </div>
-                                <div className="text-6xl animate-bounce hidden sm:block">📊</div>
-                            </div>
-                        </div>
 
-                        {/* KPI Cards */}
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                {/* ═══ INVENTORY TAB ═══ */}
                             <div className="p-5 rounded-2xl border border-teal-500/20 bg-gradient-to-br from-teal-500/10 to-teal-500/5 hover:scale-[1.02] transition-all">
                                 <div className="flex items-center justify-between mb-3">
                                     <Package className="w-8 h-8 text-teal-400" />
