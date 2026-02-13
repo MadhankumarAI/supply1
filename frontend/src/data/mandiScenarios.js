@@ -100,6 +100,23 @@ export const SCENARIOS = {
           { product_name: "Potatoes", available_quantity: 800, price_per_kg: 20, shelf_life_days: 13, last_updated: "3 hours ago" },
           { product_name: "Onions", available_quantity: 600, price_per_kg: 25, shelf_life_days: 10, last_updated: "2 hours ago" }
         ]
+      },
+      {
+        id: "test1",
+        name: "Test1 Mandi",
+        location: "Bangalore Central",
+        latitude: 12.9716,
+        longitude: 77.5946,
+        products: [
+          { product_name: "Tomatoes", available_quantity: 500, price_per_kg: 26, shelf_life_days: 4, last_updated: "1 hour ago" },
+          { product_name: "Onions", available_quantity: 700, price_per_kg: 24, shelf_life_days: 10, last_updated: "2 hours ago" },
+          { product_name: "Potatoes", available_quantity: 900, price_per_kg: 19, shelf_life_days: 14, last_updated: "1 hour ago" },
+          { product_name: "Carrots", available_quantity: 400, price_per_kg: 29, shelf_life_days: 6, last_updated: "30 mins ago" },
+          { product_name: "Cabbage", available_quantity: 350, price_per_kg: 16, shelf_life_days: 7, last_updated: "2 hours ago" },
+          { product_name: "Cauliflower", available_quantity: 380, price_per_kg: 27, shelf_life_days: 6, last_updated: "1 hour ago" },
+          { product_name: "Spinach", available_quantity: 180, price_per_kg: 26, shelf_life_days: 2, last_updated: "45 mins ago" },
+          { product_name: "Green Beans", available_quantity: 300, price_per_kg: 39, shelf_life_days: 4, last_updated: "1 hour ago" }
+        ]
       }
     ]
   },
