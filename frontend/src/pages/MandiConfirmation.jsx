@@ -8,7 +8,7 @@ export default function MandiConfirmation() {
   const { currentSearch, selectedMandi, addOrder } = useMandi()
 
   if (!currentSearch || !selectedMandi) {
-    navigate('/mandi/search')
+    navigate('/retailer/search')
     return null
   }
 
@@ -31,7 +31,7 @@ export default function MandiConfirmation() {
     }
 
     addOrder(order)
-    navigate('/mandi/history')
+    navigate('/retailer/history')
   }
 
   return (
@@ -40,7 +40,7 @@ export default function MandiConfirmation() {
       <div className="bg-black/40 backdrop-blur-sm border-b border-green-500/20">
         <div className="max-w-5xl mx-auto px-6 py-4">
           <button
-            onClick={() => navigate('/mandi/results')}
+            onClick={() => navigate('/retailer/results')}
             className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-3"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -170,7 +170,7 @@ export default function MandiConfirmation() {
             {/* Action Buttons */}
             <div className="flex gap-4">
               <button
-                onClick={() => navigate('/mandi/results')}
+                onClick={() => navigate('/retailer/results')}
                 className="flex-1 py-4 bg-gray-700 hover:bg-gray-600 text-white font-semibold rounded-xl transition-all"
               >
                 Choose Different Mandi
