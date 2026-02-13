@@ -17,7 +17,7 @@ export default function MandiHistory() {
       <div className="bg-black/40 backdrop-blur-sm border-b border-green-500/20">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <button
-            onClick={() => navigate('/mandi/search')}
+            onClick={() => navigate('/retailer/search')}
             className="flex items-center gap-2 text-gray-400 hover:text-white transition-colors mb-3"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -29,7 +29,7 @@ export default function MandiHistory() {
               <p className="text-sm text-gray-400">Track your mandi transactions and profitability</p>
             </div>
             <button
-              onClick={() => navigate('/mandi/search')}
+              onClick={() => navigate('/retailer/search')}
               className="px-6 py-2.5 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-semibold rounded-lg transition-all transform hover:scale-105 active:scale-95 shadow-lg shadow-green-500/25 flex items-center gap-2"
             >
               <ShoppingBag className="w-4 h-4" />
@@ -87,7 +87,7 @@ export default function MandiHistory() {
               <h3 className="text-xl font-semibold text-white mb-2">No Orders Yet</h3>
               <p className="text-gray-400 mb-6">Start by searching for available mandis</p>
               <button
-                onClick={() => navigate('/mandi/search')}
+                onClick={() => navigate('/retailer/search')}
                 className="px-6 py-3 bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-500 hover:to-emerald-500 text-white font-semibold rounded-lg transition-all"
               >
                 Search Mandis
