@@ -26,13 +26,13 @@ function App() {
         <Route path="/farmer/dashboard" element={<FarmerDashboard />} />
         <Route path="/mandi" element={<MandiLandingPage />} />
         <Route path="/mandi/dashboard" element={<MandiDashboard />} />
-        <Route path="/mandi/search" element={<MandiSearch />} />
-        <Route path="/mandi/results" element={<MandiResults />} />
-        <Route path="/mandi/confirm" element={<MandiConfirmation />} />
-        <Route path="/mandi/history" element={<MandiHistory />} />
         <Route path="/retailer" element={<RetailerLandingPage />} />
         <Route path="/retailer/dashboard" element={<RetailerDashboard />} />
         <Route path="/retailer/orders" element={<RetailerOrders />} />
+        <Route path="/retailer/search" element={<MandiSearch />} />
+        <Route path="/retailer/results" element={<MandiResults />} />
+        <Route path="/retailer/confirm" element={<MandiConfirmation />} />
+        <Route path="/retailer/history" element={<MandiHistory />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </MandiProvider>
