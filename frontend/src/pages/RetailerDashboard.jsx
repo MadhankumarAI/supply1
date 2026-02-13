@@ -464,20 +464,230 @@ export default function RetailerDashboard() {
                 </div>
 
                 {/* CONTENT AREA */}
-                <div className="p-6">
+                <div className="p-0">
 
                 {/* ═══ OVERVIEW TAB ═══ */}
                 {tab === 'overview' && (
-                    <div className="space-y-6">
-                        {/* Welcome Banner */}
-                        <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-teal-500/10 via-cyan-500/5 to-blue-500/10 border border-teal-500/20 p-8">
-                            <div className="absolute inset-0 opacity-5">
-                                <div className="absolute top-0 left-0 w-40 h-40 bg-teal-400 rounded-full blur-3xl"></div>
-                                <div className="absolute bottom-0 right-0 w-40 h-40 bg-cyan-400 rounded-full blur-3xl"></div>
+                    <div className="space-y-0">
+                        {/* INDUSTRIAL HEADER SECTION */}
+                        <div className="bg-[#1a1a1a] border-b-2 border-[#14b8a6] p-8">
+                            <div style={{ fontFamily: "'JetBrains Mono', monospace" }} className="mb-2">
+                                <span className="text-[10px] tracking-[0.2em] text-white/40">OPERATOR</span>
                             </div>
-                            <div className="relative flex items-center justify-between">
-                                <div>
-                                    <h1 className="text-3xl font-black mb-2">Welcome back, {profile?.user?.username}! 🛒</h1>
+                            <h1 style={{ fontFamily: "'JetBrains Mono', monospace" }} className="text-5xl font-bold tracking-tight text-white mb-3">
+                                {profile?.user?.username?.toUpperCase() || 'RETAILER'}
+                            </h1>
+                            <div className="flex items-center gap-6 text-[11px] text-white/50" style={{ fontFamily: "'Azeret Mono', monospace" }}>
+                                <span>ID: {profile?.user?.id || '---'}</span>
+                                <span>ROLE: RETAIL_OPS</span>
+                                <span>STATUS: ACTIVE</span>
+                            </div>
+                        </div>
+
+                        {/* METRICS GRID - Full Bleed */}
+                        <div className="grid grid-cols-4 border-b border-white/[0.08]">
+                            {/* Metric 1 */}
+                            <div className="border-r border-white/[0.08] p-6 bg-[#1a1a1a] hover:bg-[#14b8a6]/5 transition-colors">
+                                <div style={{ fontFamily: "'JetBrains Mono', monospace" }} className="text-[10px] tracking-[0.15em] text-white/40 mb-3">
+                                    INVENTORY_ITEMS
+                                </div>
+                                <div style={{ fontFamily: "'Azeret Mono', monospace" }} className="text-4xl font-bold text-[#14b8a6] mb-2">
+                                    {items.length.toString().padStart(3, '0')}
+                                </div>
+                                <div className="flex items-center gap-2 text-[10px] text-[#00ff88]">
+                                    <TrendingUp className="w-3 h-3" />
+                                    <span>TRACKED</span>
+                                </div>
+                            </div>
+
+                            {/* Metric 2 */}
+                            <div className="border-r border-white/[0.08] p-6 bg-[#1a1a1a] hover:bg-[#14b8a6]/5 transition-colors">
+                                <div style={{ fontFamily: "'JetBrains Mono', monospace" }} className="text-[10px] tracking-[0.15em] text-white/40 mb-3">
+                                    ACTIVE_ORDERS
+                                </div>
+                                <div style={{ fontFamily: "'Azeret Mono', monospace" }} className="text-4xl font-bold text-[#14b8a6] mb-2">
+                                    {orders.length.toString().padStart(3, '0')}
+                                </div>
+                                <div className="flex items-center gap-2 text-[10px] text-[#00ff88]">
+                                    <Activity className="w-3 h-3" />
+                                    <span>PROCESSING</span>
+                                </div>
+                            </div>
+
+                            {/* Metric 3 */}
+                            <div className="border-r border-white/[0.08] p-6 bg-[#1a1a1a] hover:bg-[#14b8a6]/5 transition-colors">
+                                <div style={{ fontFamily: "'JetBrains Mono', monospace" }} className="text-[10px] tracking-[0.15em] text-white/40 mb-3">
+                                    TOTAL_STOCK_KG
+                                </div>
+                                <div style={{ fontFamily: "'Azeret Mono', monospace" }} className="text-4xl font-bold text-[#14b8a6] mb-2">
+                                    {totalStock.toFixed(0).toString().padStart(3, '0')}
+                                </div>
+                                <div className="flex items-center gap-2 text-[10px] text-[#ffd600]">
+                                    <Package className="w-3 h-3" />
+                                    <span>IN_STOCK</span>
+                                </div>
+                            </div>
+
+                            {/* Metric 4 */}
+                            <div className="p-6 bg-[#1a1a1a] hover:bg-[#14b8a6]/5 transition-colors">
+                                <div style={{ fontFamily: "'JetBrains Mono', monospace" }} className="text-[10px] tracking-[0.15em] text-white/40 mb-3">
+                                    ORDER_VALUE_INR
+                                </div>
+                                <div style={{ fontFamily: "'Azeret Mono', monospace" }} className="text-4xl font-bold text-[#14b8a6] mb-2">
+                                    {(totalOrderValue/1000).toFixed(1)}K
+                                </div>
+                                <div className="flex items-center gap-2 text-[10px] text-[#00ff88]">
+                                    <DollarSign className="w-3 h-3" />
+                                    <span>REVENUE</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* DATA SECTIONS */}
+                        <div className="grid grid-cols-2 gap-0 border-b border-white/[0.08]">
+                            {/* Recent Items - Industrial Table */}
+                            <div className="border-r border-white/[0.08] p-6">
+                                <div className="flex items-center justify-between mb-4 pb-3 border-b-2 border-[#14b8a6]/30">
+                                    <h3 style={{ fontFamily: "'JetBrains Mono', monospace" }} className="text-xs tracking-[0.15em] text-white/60">
+                                        RECENT_INVENTORY
+                                    </h3>
+                                    <button 
+                                        onClick={() => setTab('inventory')}
+                                        className="text-[10px] text-[#14b8a6] hover:text-white transition-colors"
+                                        style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                                    >
+                                        VIEW_ALL →
+                                    </button>
+                                </div>
+                                <div className="space-y-0">
+                                    {items.slice(0, 5).map((item, idx) => (
+                                        <div 
+                                            key={item.id}
+                                            className={`flex items-center justify-between py-3 ${idx !== 0 ? 'border-t border-white/[0.04]' : ''} hover:bg-white/[0.02] transition-colors`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-xl">{CROP_EMOJIS[item.item?.toLowerCase()] || CROP_EMOJIS.default}</span>
+                                                <div>
+                                                    <div style={{ fontFamily: "'Azeret Mono', monospace" }} className="text-xs font-semibold text-white">
+                                                        {item.item?.toUpperCase()}
+                                                    </div>
+                                                    <div style={{ fontFamily: "'JetBrains Mono', monospace" }} className="text-[10px] text-white/40">
+                                                        {item.name}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style={{ fontFamily: "'Azeret Mono', monospace" }} className="text-sm font-bold text-[#14b8a6]">
+                                                {item.quantity}KG
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {items.length === 0 && (
+                                        <div className="text-center py-12 text-white/20 text-xs" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                                            NO_INVENTORY_DATA
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+
+                            {/* Recent Orders */}
+                            <div className="p-6">
+                                <div className="flex items-center justify-between mb-4 pb-3 border-b-2 border-[#14b8a6]/30">
+                                    <h3 style={{ fontFamily: "'JetBrains Mono', monospace" }} className="text-xs tracking-[0.15em] text-white/60">
+                                        RECENT_ORDERS
+                                    </h3>
+                                    <button 
+                                        onClick={() => setTab('orders')}
+                                        className="text-[10px] text-[#14b8a6] hover:text-white transition-colors"
+                                        style={{ fontFamily: "'JetBrains Mono', monospace" }}
+                                    >
+                                        VIEW_ALL →
+                                    </button>
+                                </div>
+                                <div className="space-y-0">
+                                    {orders.slice(0, 5).map((order, idx) => (
+                                        <div 
+                                            key={order.id}
+                                            className={`flex items-center justify-between py-3 ${idx !== 0 ? 'border-t border-white/[0.04]' : ''} hover:bg-white/[0.02] transition-colors`}
+                                        >
+                                            <div className="flex items-center gap-3">
+                                                <span className="text-xl">{CROP_EMOJIS[order.item?.toLowerCase()] || CROP_EMOJIS.default}</span>
+                                                <div>
+                                                    <div style={{ fontFamily: "'Azeret Mono', monospace" }} className="text-xs font-semibold text-white">
+                                                        {order.item?.toUpperCase()}
+                                                    </div>
+                                                    <div style={{ fontFamily: "'JetBrains Mono', monospace" }} className="text-[10px] text-white/40">
+                                                        {order.quantity}KG × ₹{order.price_per_kg}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div style={{ fontFamily: "'Azeret Mono', monospace" }} className="text-sm font-bold text-[#14b8a6]">
+                                                ₹{(order.price_per_kg * order.quantity).toLocaleString()}
+                                            </div>
+                                        </div>
+                                    ))}
+                                    {orders.length === 0 && (
+                                        <div className="text-center py-12 text-white/20 text-xs" style={{ fontFamily: "'JetBrains Mono', monospace" }}>
+                                            NO_ORDERS_DATA
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* CHARTS SECTION */}
+                        <div className="grid grid-cols-2 gap-0">
+                            {items.length > 0 && (
+                                <div className="border-r border-white/[0.08] p-6 bg-[#0f0f0f]">
+                                    <div className="mb-4 pb-3 border-b border-white/[0.08]">
+                                        <h3 style={{ fontFamily: "'JetBrains Mono', monospace" }} className="text-xs tracking-[0.15em] text-[#14b8a6]">
+                                            STOCK_DISTRIBUTION
+                                        </h3>
+                                    </div>
+                                    <div style={{ height: 280 }}>
+                                        <Doughnut 
+                                            data={inventoryChartData} 
+                                            options={{ 
+                                                responsive: true, 
+                                                maintainAspectRatio: false, 
+                                                plugins: { 
+                                                    legend: { 
+                                                        labels: { 
+                                                            color: '#ffffff60', 
+                                                            font: { size: 10, family: "'JetBrains Mono', monospace" },
+                                                            padding: 12 
+                                                        } 
+                                                    } 
+                                                } 
+                                            }} 
+                                        />
+                                    </div>
+                                </div>
+                            )}
+
+                            {orders.length > 0 && (
+                                <div className="p-6 bg-[#0f0f0f]">
+                                    <div className="mb-4 pb-3 border-b border-white/[0.08]">
+                                        <h3 style={{ fontFamily: "'JetBrains Mono', monospace" }} className="text-xs tracking-[0.15em] text-[#14b8a6]">
+                                            ORDER_VALUE_TIMELINE
+                                        </h3>
+                                    </div>
+                                    <div style={{ height: 280 }}>
+                                        <BarChart 
+                                            data={ordersTimelineData} 
+                                            options={{
+                                                ...chartOpts(),
+                                                plugins: {
+                                                    ...chartOpts().plugins,
+                                                    legend: { display: false }
+                                                }
+                                            }} 
+                                        />
+                                    </div>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
                                     <p className="text-white/60 text-sm">Your retail command center • Manage inventory • Track orders • Optimize stock</p>
                                 </div>
                                 <div className="text-6xl animate-bounce hidden sm:block">📊</div>
