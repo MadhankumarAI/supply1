@@ -13,6 +13,10 @@ export default function MandiConfirmation() {
   }
 
   const handleConfirmOrder = () => {
+    console.log('🔍 handleConfirmOrder called');
+    console.log('📦 currentSearch:', currentSearch);
+    console.log('🏪 selectedMandi:', selectedMandi);
+    
     const order = {
       product: currentSearch.product,
       quantity: currentSearch.quantity,
@@ -32,8 +36,15 @@ export default function MandiConfirmation() {
       scenario: currentSearch.scenarioData.name
     }
 
-    addOrder(order)
-    navigate('/retailer/history')
+    console.log('📝 Order created:', order);
+    console.log('💾 Calling addOrder...');
+    
+    addOrder(order);
+    
+    console.log('✅ Order added, navigating to history...');
+    console.log('📊 Check localStorage:', localStorage.getItem('mandiNotifications'));
+    
+    navigate('/retailer/history');
   }
 
   return (
